@@ -2,7 +2,7 @@
 \usepackage[a4paper, includeheadfoot, mag=1000, left=2cm, right=1.5cm, top=1.5cm, bottom=1.5cm, headsep=0.8cm, footskip=0.8cm]{geometry}
 % Fonts
 \usepackage{fontspec, unicode-math}
-\setmainfont[Ligatures=TeX]{Roboto}
+\setmainfont[Ligatures=TeX]{PT Serif}
 \setmonofont{CMU Typewriter Text}
 \usepackage[english, russian]{babel}
 % Indent first paragraph
@@ -57,15 +57,15 @@
 \begin{document}
 
 % Title page
-% \include{spectitlepage}
+\include{titlepage}
 
-% Below is smth like running title
-% \begin{center}
-% \textsc{Darknet RoboGit \&\& RoboStore}
-% \vspace{12mm}
-% \end{center}
-% \tableofcontents
-% \newpage
+
+\begin{center}
+\textsc{Darknet RoboGit \&\& RoboStore}
+\vspace{12mm}
+\end{center}
+\tableofcontents
+\newpage
 
 % Contents
 
@@ -260,6 +260,12 @@ RoboStore -- интернет-магазин с товарами для робо
 
 \subsection{UML-диаграмма прецедентов}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm]{uml-precedents.png}
+  \caption{UML-диаграмма прецедентов}
+\end{figure}
+
 \section{Требования к аппаратно-программному обеспечению}
 
 \subsection{Требования к серверному обеспечению}
@@ -312,11 +318,10 @@ RoboStore -- интернет-магазин с товарами для робо
 \subsection{Уровень front-end}
 
 \begin{enumerate}
-\item Уровень front-end должен быть построен на \textit{ReactJS + Redux} 
-  (необходимо использовать ES6 и JSX) с использованием набора
+\item Уровень front-end строится на \textit{ReactJS + Redux} 
+  с использованием ES6 и JSX и набора
   компонентов \textit{Belle}.
-\item Веб-интерфейс должен быть адаптирован для отображения в трех режимах:
-\item 
+\item Веб-интерфейс адаптирован для отображения в трех режимах:
   \begin{itemize}
   \item \textit{Десктопном}: ширина экрана больше 1105px
   \item \textit{Планшетном}: ширина экрана больше 687px и меньше 1105px
@@ -345,6 +350,12 @@ RoboStore -- интернет-магазин с товарами для робо
 \end{enumerate}
 
 \section{Архитектура системы}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=16cm]{system-arch.png}
+  \caption{Архитектура системы}
+\end{figure}
 
 \section{Прототипы интерфейсов}
 
