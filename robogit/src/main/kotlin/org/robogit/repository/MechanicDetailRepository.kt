@@ -4,4 +4,5 @@ import org.robogit.domain.MechanicDetail
 import org.springframework.data.repository.CrudRepository
 
 interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
+  fun findByMaterial(material: String): List<MechanicDetail>
 }

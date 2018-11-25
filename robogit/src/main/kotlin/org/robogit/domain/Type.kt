@@ -12,7 +12,7 @@ enum class Type(name: String) {
   companion object {
     fun from(name: String): Type? {
       for (type in Type.values()) {
-        if (type.typeName.toUpperCase() === name.toUpperCase())
+        if (type.typeName.toUpperCase() == name.toUpperCase())
           return type
       }
 
