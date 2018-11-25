@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode
 import org.hibernate.annotations.Check
 import javax.persistence.*
 import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "controllers", schema = "s244707")
@@ -24,4 +25,9 @@ class Sensor {
   @Column
   @Min(0)
   var maxVoltage: Float? = null
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "interface_id")
+  @NotNull
+  var sensorInterface: Interface? = null
 }

@@ -1,6 +1,7 @@
 package org.robogit.repository
 
 import org.robogit.domain.Controller
+import org.robogit.domain.Interface
 import org.springframework.data.repository.CrudRepository
 
 interface ControllerRepository : CrudRepository<Controller, Int> {
@@ -27,4 +28,6 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
   fun findByAnalogInputsGreaterThan(analogInputs: Int): List<Controller>
 
   fun findByAnalogInputsLessThan(analogInputs: Int): List<Controller>
+
+  fun findByControllerInterface(controllerInterface: Interface): List<Controller>
 }
