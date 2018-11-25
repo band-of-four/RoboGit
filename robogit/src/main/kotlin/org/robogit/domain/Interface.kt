@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
+
+/**
+ * Класс, описывающий сущность Интерфейс
+ * name - название интерфейса
+ */
 @Entity
 @Table(name = "interfaces", schema = "s244707")
 class Interface {

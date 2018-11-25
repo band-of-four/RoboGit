@@ -4,6 +4,13 @@ import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
+/**
+ * Класс, описывающий сущность Репозитория
+ * id_user - номер пользователя, которому принадлежит репозиторий
+ * path - путь к репозиторию в файловой системе гита
+ * description - описание репозитория
+ * name - название репозитория
+ */
 @Entity
 @Table(name = "repositories", schema = "s244707")
 class Repository {
