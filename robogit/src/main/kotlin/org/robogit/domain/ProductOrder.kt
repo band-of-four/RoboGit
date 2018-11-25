@@ -10,30 +10,30 @@ import javax.validation.constraints.NotNull
 @Table(name = "products_orders", schema = "s244707")
 @EqualsAndHashCode(of = ["id"])
 class ProductOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_orders_gen")
-    @SequenceGenerator(name = "products_orders_gen", sequenceName = "products_orders_id_seq")
-    @Column
-    var id: Int? = null
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_orders_gen")
+  @SequenceGenerator(name = "products_orders_gen", sequenceName = "products_orders_id_seq")
+  @Column
+  var id: Int? = null
 
-    @Column
-    @Min(0)
-    @NotNull
-    var amount: Int? = null
+  @Column
+  @Min(0)
+  @NotNull
+  var amount: Int? = null
 
-    @Column
-    @Min(0)
-    @NotNull
-    var unit_price: Float? = null
+  @Column
+  @Min(0)
+  @NotNull
+  var unit_price: Float? = null
 
-    @ManyToOne
-    @NotNull
-    @JoinColumn(name = "id_order")
-    var order: Order? = null
+  @ManyToOne
+  @NotNull
+  @JoinColumn(name = "id_order")
+  var order: Order? = null
 
-    @ManyToOne
-    @NotNull
-    @JoinColumn(name = "id_product")
-    var information: Information? = null
+  @ManyToOne
+  @NotNull
+  @JoinColumn(name = "id_product")
+  var information: Information? = null
 
 }

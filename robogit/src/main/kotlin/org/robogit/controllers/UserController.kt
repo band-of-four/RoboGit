@@ -18,31 +18,31 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/user")
 @Slf4j
 class UserController {
-    @Autowired
-    private val userRepository: UserRepository? = null
-    @Autowired
-    private val platformRepository: PlatformRepository? = null
+  @Autowired
+  private val userRepository: UserRepository? = null
+  @Autowired
+  private val platformRepository: PlatformRepository? = null
 
-    @Autowired
-    private val controllerRepository: ControllerRepository? = null
+  @Autowired
+  private val controllerRepository: ControllerRepository? = null
 
-    @GetMapping("/all/{id}")
-    fun getAll(@PathVariable("id") id: Int?): User {
-        println("Controller Hello!")
-        return userRepository?.findById(id)!!.get()
-    }
+  @GetMapping("/all/{id}")
+  fun getAll(@PathVariable("id") id: Int?): User {
+    println("Controller Hello!")
+    return userRepository?.findById(id!!)!!.get()
+  }
 
-    @GetMapping("/controller/{id}")
-    fun getController(@PathVariable("id") id: Int?): Controller {
-        println("Controller Hello!")
+  @GetMapping("/controller/{id}")
+  fun getController(@PathVariable("id") id: Int?): Controller {
+    println("Controller Hello!")
 
-        return controllerRepository!!.findAll().iterator().next()
-    }
+    return controllerRepository!!.findAll().iterator().next()
+  }
 
-    @GetMapping("/platform/{id}")
-    fun getPlatform(@PathVariable("id") id: Int?): Platform {
-        println("Controller Hello!")
-        return platformRepository?.findById(id)!!.get()
-    }
+  @GetMapping("/platform/{id}")
+  fun getPlatform(@PathVariable("id") id: Int?): Platform {
+    println("Controller Hello!")
+    return platformRepository?.findById(id!!)!!.get()
+  }
 
 }

@@ -7,24 +7,24 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(name = "interfaces", schema = "s244707")
-class Interface{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "interface_gen")
-    @SequenceGenerator(name = "interface_gen", sequenceName = "interface_id_seq")
-    @Column
-    var id: Int? = null
+class Interface {
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "interface_gen")
+  @SequenceGenerator(name = "interface_gen", sequenceName = "interface_id_seq")
+  @Column
+  var id: Int? = null
 
-    @Column(unique = true)
-    @NotBlank
-    var name : String? = null
+  @Column(unique = true)
+  @NotBlank
+  var name: String? = null
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "controllerInterface")
-    var controllers: Set<Controller> = HashSet()
+  @JsonIgnore
+  @OneToMany(mappedBy = "controllerInterface")
+  var controllers: Set<Controller> = HashSet()
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "motorInterface")
-    var motors: Set<Motor> = HashSet()
+  @JsonIgnore
+  @OneToMany(mappedBy = "motorInterface")
+  var motors: Set<Motor> = HashSet()
 
 /*
     @ManyToMany

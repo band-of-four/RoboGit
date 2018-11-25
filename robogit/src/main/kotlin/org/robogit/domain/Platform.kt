@@ -12,44 +12,44 @@ import javax.validation.constraints.NotNull
 @EqualsAndHashCode
 class Platform {
 
-    @Id
-    @Column
-    var id: Int? = null
+  @Id
+  @Column
+  var id: Int? = null
 
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
-    var information: Information? = null
+  @OneToOne
+  @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
+  var information: Information? = null
 
-    @Column
-    @Min(0)
-    var ram: Int? = null
+  @Column
+  @Min(0)
+  var ram: Int? = null
 
-    @Column
-    var minVoltage: Float? = null
+  @Column
+  var minVoltage: Float? = null
 
-    @Column
-    @Min(0)
-    var maxVoltage: Float? = null
+  @Column
+  @Min(0)
+  var maxVoltage: Float? = null
 
-    @Column
-    var analogInputs: Int? = null
+  @Column
+  var analogInputs: Int? = null
 
-    @Column
-    @Min(0)
-    var freq: Float? = null
+  @Column
+  @Min(0)
+  var freq: Float? = null
 
-    @Column
-    var flashmemory: Int? = null
+  @Column
+  var flashmemory: Int? = null
 
-    @ManyToOne
-    @JoinColumn(name = "controller")
-    @NotNull
-    var controller: Controller? = null;
+  @ManyToOne
+  @JoinColumn(name = "controller")
+  @NotNull
+  var controller: Controller? = null
 
-    @ManyToMany
-    @JoinTable(name = "details_interfaces",
-            inverseJoinColumns = arrayOf(JoinColumn(name="interface_id", referencedColumnName = "id")),
-            joinColumns = arrayOf(JoinColumn(name="detail_id", referencedColumnName = "id"))
-    )
-    var interfaces: Set<Interface> = HashSet()
+  @ManyToMany
+  @JoinTable(name = "details_interfaces",
+      inverseJoinColumns = arrayOf(JoinColumn(name = "interface_id", referencedColumnName = "id")),
+      joinColumns = arrayOf(JoinColumn(name = "detail_id", referencedColumnName = "id"))
+  )
+  var interfaces: Set<Interface> = HashSet()
 }

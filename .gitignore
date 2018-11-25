@@ -1,8 +1,11 @@
 *.aux
 *.toc
 *.log
-robogit/.idea/
-robogit/out/
-robogit/.gradle/
-robogit/build/
-robogit/gradle/
+*.iml
+
+.idea/
+out/
+.gradle/
+build/
+gradle/
+

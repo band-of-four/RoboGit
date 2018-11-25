@@ -10,27 +10,27 @@ import javax.validation.constraints.NotNull
 @Table(name = "motors", schema = "s244707")
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
-class Motor{
-    @Id
-    @Column
-    var id: Int? = null
+class Motor {
+  @Id
+  @Column
+  var id: Int? = null
 
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
-    var information: Information? = null
+  @OneToOne
+  @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
+  var information: Information? = null
 
-    @Column
-    @Min(0)
-    var power: Float? = null
+  @Column
+  @Min(0)
+  var power: Float? = null
 
-    @Column
-    var minVoltage: Float? = null
+  @Column
+  var minVoltage: Float? = null
 
-    @Column
-    var maxVoltage: Float? = null
+  @Column
+  var maxVoltage: Float? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interface_id")
-    @NotNull
-    var motorInterface: Interface? = null
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "interface_id")
+  @NotNull
+  var motorInterface: Interface? = null
 }

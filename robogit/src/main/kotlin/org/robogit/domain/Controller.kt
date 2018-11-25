@@ -12,32 +12,32 @@ import javax.validation.constraints.NotNull
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
 class Controller : Serializable {
-    @Id
-    @Column
-    var id: Int? = null
+  @Id
+  @Column
+  var id: Int? = null
 
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
-    var information: Information? = null
+  @OneToOne
+  @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
+  var information: Information? = null
 
-    @Column
-    @Min(0)
-    var ram: Int? = null
+  @Column
+  @Min(0)
+  var ram: Int? = null
 
-    @Column
-    @Min(0)
-    var minVoltage: Float? = null
+  @Column
+  @Min(0)
+  var minVoltage: Float? = null
 
-    @Column
-    var maxVoltage: Float? = null
+  @Column
+  var maxVoltage: Float? = null
 
-    @Column
-    var analogInputs: Int? = null
+  @Column
+  var analogInputs: Int? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interface_id")
-    @NotNull
-    var controllerInterface: Interface? = null
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "interface_id")
+  @NotNull
+  var controllerInterface: Interface? = null
 //
 //    @OneToMany(mappedBy = "controller")
 //    var platforms: Set<Platform> = HashSet();

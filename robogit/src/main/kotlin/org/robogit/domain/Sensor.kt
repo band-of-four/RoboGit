@@ -10,18 +10,18 @@ import javax.validation.constraints.Min
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
 class Sensor {
-    @Id
-    @Column
-    var id: Int? = null
+  @Id
+  @Column
+  var id: Int? = null
 
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
-    var information: Information? = null
+  @OneToOne
+  @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
+  var information: Information? = null
 
-    @Column
-    var minVoltage: Float? = null
+  @Column
+  var minVoltage: Float? = null
 
-    @Column
-    @Min(0)
-    var maxVoltage: Float? = null
+  @Column
+  @Min(0)
+  var maxVoltage: Float? = null
 }
