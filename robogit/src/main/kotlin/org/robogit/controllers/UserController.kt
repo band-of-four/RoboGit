@@ -2,8 +2,10 @@ package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Controller
+import org.robogit.domain.Platform
 import org.robogit.domain.User
 import org.robogit.repository.ControllerRepository
+import org.robogit.repository.PlatformRepository
 import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 class UserController {
     @Autowired
     private val userRepository: UserRepository? = null
+    @Autowired
+    private val platformRepository: PlatformRepository? = null
 
     @Autowired
     private val controllerRepository: ControllerRepository? = null
@@ -34,4 +38,11 @@ class UserController {
 
         return controllerRepository!!.findAll().iterator().next()
     }
+
+    @GetMapping("/platform/{id}")
+    fun getPlatform(@PathVariable("id") id: Int?): Platform {
+        println("Controller Hello!")
+        return platformRepository?.findById(id)!!.get()
+    }
+
 }

@@ -20,5 +20,17 @@ class Interface{
 
     @JsonIgnore
     @OneToMany(mappedBy = "controllerInterface")
-    var controllers: Set<Controller> = HashSet();
+    var controllers: Set<Controller> = HashSet()
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "motorInterface")
+    var motors: Set<Motor> = HashSet()
+
+/*
+    @ManyToMany
+    @JoinTable(name = "details_interfaces",
+            joinColumns = arrayOf(JoinColumn(name="interface_id", referencedColumnName = "id")),
+            inverseJoinColumns = arrayOf(JoinColumn(name="detail_id", referencedColumnName = "id"))
+    )
+    var platforms: Set<Platform> = HashSet()*/
 }

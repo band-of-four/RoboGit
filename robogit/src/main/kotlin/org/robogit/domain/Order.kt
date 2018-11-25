@@ -1,5 +1,6 @@
 package org.robogit.domain
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import lombok.EqualsAndHashCode
 import java.util.*
 import javax.persistence.*
@@ -22,11 +23,12 @@ class Order {
     @Column
     var address: String? = null
 
-    @Column
-    var paymentType: String? = null
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_user")
     @NotNull
-    var user: User? = null;
+    var user: User? = null
+
+    @OneToMany(mappedBy = "order")
+    var productOrders: Set<ProductOrder> = HashSet()
 }

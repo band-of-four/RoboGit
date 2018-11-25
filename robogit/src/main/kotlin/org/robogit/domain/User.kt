@@ -24,5 +24,14 @@ class User {
     var telegramId: String? = null
 
     @OneToMany(mappedBy = "user")
-    var orders: Set<Order> = HashSet();
+    var orders: Set<Order> = HashSet()
+
+    @OneToMany(mappedBy = "user")
+    var repositories: Set<Repository> = HashSet()
+
+    @OneToMany(mappedBy = "user")
+    var stars: Set<Star> = HashSet()
+
+    @OneToMany(mappedBy = "user")
+    var products: Set<ProductUser> = HashSet()
 }

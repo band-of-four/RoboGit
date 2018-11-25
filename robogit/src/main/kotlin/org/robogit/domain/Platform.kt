@@ -2,16 +2,16 @@ package org.robogit.domain
 
 import lombok.EqualsAndHashCode
 import org.hibernate.annotations.Check
-import java.io.Serializable
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name = "controllers", schema = "s244707")
+@Table(name = "platforms", schema = "s244707")
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
-class Controller : Serializable {
+class Platform {
+
     @Id
     @Column
     var id: Int? = null
@@ -33,11 +33,22 @@ class Controller : Serializable {
     @Column
     var analogInputs: Int? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interface_id")
+    @Column
+    @Min(0)
+    var freq: Float? = null
+
+    @Column
+    var flashmemory: Int? = null
+
+    @ManyToOne
+    @JoinColumn(name = "controller")
     @NotNull
-    var controllerInterface: Interface? = null
-//
-//    @OneToMany(mappedBy = "controller")
-//    var platforms: Set<Platform> = HashSet();
+    var controller: Controller? = null;
+
+    @ManyToMany
+    @JoinTable(name = "details_interfaces",
+            inverseJoinColumns = arrayOf(JoinColumn(name="interface_id", referencedColumnName = "id")),
+            joinColumns = arrayOf(JoinColumn(name="detail_id", referencedColumnName = "id"))
+    )
+    var interfaces: Set<Interface> = HashSet()
 }
