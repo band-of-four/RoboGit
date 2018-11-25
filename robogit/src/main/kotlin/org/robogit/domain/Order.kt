@@ -8,6 +8,12 @@ import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
+/**
+ * Класс, описывающий сущность Заказа, хнанит ифнормацию о заказах
+ * price - сумма всех покупок в заказе
+ * date - дата создания заказа
+ * address - адрес получателя
+ */
 @Entity
 @Table(name = "orders", schema = "s244707")
 @EqualsAndHashCode(of = ["id"])

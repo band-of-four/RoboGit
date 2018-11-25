@@ -5,6 +5,11 @@ import org.hibernate.annotations.Check
 import javax.persistence.*
 import javax.validation.constraints.Min
 
+/**
+ * Класс, описывающий сущность Сенсора
+ *  min_voltage - минимальное значнеие
+ *  max_voltage - максимальное напряжение
+ */
 @Entity
 @Table(name = "controllers", schema = "s244707")
 @Check(constraints = "max_voltage > min_voltage")

@@ -3,6 +3,11 @@ package org.robogit.domain
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
+/**
+ * Класс, описывающий сущность Звездочек
+ * id_user - id пользователя
+ * id_repository - id репозитория
+ */
 @Entity
 @Table(name = "stars", schema = "s244707")
 class Star{
