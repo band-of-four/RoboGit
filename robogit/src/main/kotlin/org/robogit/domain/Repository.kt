@@ -13,7 +13,7 @@ class Repository{
     @Column
     var id: Int? = null
 
-    @Column
+    @Column(unique = true)
     @NotBlank
     var path: String? = null
 

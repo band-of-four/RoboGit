@@ -1,9 +1,11 @@
 package org.robogit.domain
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.EqualsAndHashCode
 import java.util.*
 import javax.persistence.*
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
@@ -21,6 +23,7 @@ class Order {
     var date: Date? = null
 
     @Column
+    @NotBlank
     var address: String? = null
 
     @JsonBackReference
@@ -29,6 +32,7 @@ class Order {
     @NotNull
     var user: User? = null
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order")
     var productOrders: Set<ProductOrder> = HashSet()
 }

@@ -22,5 +22,6 @@ class Sensor {
     var minVoltage: Float? = null
 
     @Column
+    @Min(0)
     var maxVoltage: Float? = null
 }

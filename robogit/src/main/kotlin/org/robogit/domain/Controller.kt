@@ -25,6 +25,7 @@ class Controller : Serializable {
     var ram: Int? = null
 
     @Column
+    @Min(0)
     var minVoltage: Float? = null
 
     @Column

@@ -1,5 +1,6 @@
 package org.robogit.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.EqualsAndHashCode
 import javax.persistence.*
 import javax.validation.constraints.Min
@@ -17,8 +18,10 @@ class ProductUser{
 
     @Column
     @Min(0)
+    @NotNull
     var amount: Int? = null
 
+    @JsonIgnore
     @ManyToOne
     @NotNull
     @JoinColumn(name = "id_user")
