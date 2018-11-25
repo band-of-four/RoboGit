@@ -6,6 +6,12 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
+/**
+ * Класс, описывающий сущность, определяющую какие товары находятся в определенной корзине
+ * part_number - номер товара
+ * id_user - номер пользователя
+ * amount - количество данного товара в корзине
+ */
 @Entity
 @Table(name = "products_users", schema = "s244707")
 @EqualsAndHashCode(of = ["id"])

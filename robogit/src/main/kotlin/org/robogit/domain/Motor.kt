@@ -6,6 +6,13 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
+/**
+ * Класс, описывающий сущность Мотор, хнанит ифнормацию о моторах
+ * model - модель сенсора
+ * min_voltage - минимальное напряжение
+ * max_voltage - максимальное напряжение
+ * power - номинальная мощность
+ */
 @Entity
 @Table(name = "motors", schema = "s244707")
 @Check(constraints = "max_voltage > min_voltage")

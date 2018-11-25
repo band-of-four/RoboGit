@@ -3,6 +3,12 @@ package org.robogit.domain
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
+/**
+ * Класс, описывающий сущность польщователя
+ * login - логин пользователя в системе
+ * password - пароль пользователя в системе
+ * telegram_id - id в телеграме
+ */
 @Entity
 @Table(name = "users", schema = "s244707")
 class User {

@@ -6,6 +6,11 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
+/**
+ * Класс, описывающий сущность Сенсора
+ *  min_voltage - минимальное значнеие
+ *  max_voltage - максимальное напряжение
+ */
 @Entity
 @Table(name = "controllers", schema = "s244707")
 @Check(constraints = "max_voltage > min_voltage")
