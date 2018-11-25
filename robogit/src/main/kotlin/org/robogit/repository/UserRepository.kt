@@ -4,7 +4,17 @@ import org.robogit.domain.User
 import org.springframework.data.repository.CrudRepository
 
 interface UserRepository : CrudRepository<User, Int> {
+
+  /**
+   * Finds [User] with specified [login].
+   * @return Instance of [User] if exists, null - otherwise.
+   */
   fun findByLogin(login: String): User?
 
+  /**
+   * Finds [User]s with specified [telegramId].
+   * @param telegramId is an identifier related to a [User] of a few [User]s.
+   * @return List with selected users.
+   */
   fun findByTelegramId(telegramId: String): List<User>
 }
