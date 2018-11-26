@@ -31,6 +31,12 @@ class UserController {
     return userRepository?.findById(id!!)!!.get()
   }
 
+  @GetMapping("/login/{login}")
+  fun getUser(@PathVariable("login") login: String?): User? {
+    println("Controller Hello!")
+    return userRepository?.findByLogin(login!!)
+  }
+
   @GetMapping("/controller/{id}")
   fun getController(@PathVariable("id") id: Int?): Controller {
     println("Controller Hello!")
