@@ -5,6 +5,7 @@
 
 .idea/
 out/
+!docs/out/
 .gradle/
 build/
 gradle/
