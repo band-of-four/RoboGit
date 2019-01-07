@@ -3,6 +3,7 @@ package org.robogit.domain
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.EqualsAndHashCode
+import org.robogit.config.DatabaseConfig
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
@@ -15,12 +16,12 @@ import javax.validation.constraints.NotNull
  * address - адрес получателя
  */
 @Entity
-@Table(name = "orders", schema = "s244707")
+@Table(name = "orders", schema = DatabaseConfig.SCHEMA_NAME)
 @EqualsAndHashCode(of = ["id"])
 class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_gen")
-  @SequenceGenerator(name = "order_gen", sequenceName = "order_id_seq")
+  @SequenceGenerator(name = "order_gen", sequenceName = "orders_id_seq")
   @Column
   var id: Int? = null
 

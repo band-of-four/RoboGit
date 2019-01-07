@@ -1,5 +1,6 @@
 package org.robogit.domain
 
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull
  * name - название репозитория
  */
 @Entity
-@Table(name = "repositories", schema = "s244707")
+@Table(name = "repositories", schema = DatabaseConfig.SCHEMA_NAME)
 class Repository {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "repository_gen")

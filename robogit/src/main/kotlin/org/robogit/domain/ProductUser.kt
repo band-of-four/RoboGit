@@ -2,6 +2,7 @@ package org.robogit.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.EqualsAndHashCode
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull
  * amount - количество данного товара в корзине
  */
 @Entity
-@Table(name = "products_users", schema = "s244707")
+@Table(name = "products_users", schema = DatabaseConfig.SCHEMA_NAME)
 @EqualsAndHashCode(of = ["id"])
 class ProductUser {
   @Id

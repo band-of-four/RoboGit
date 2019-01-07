@@ -2,6 +2,7 @@ package org.robogit.domain
 
 import lombok.EqualsAndHashCode
 import org.hibernate.annotations.Check
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull
  * ram - размер оперативной памяти
  */
 @Entity
-@Table(name = "platforms", schema = "s244707")
+@Table(name = "platforms", schema = DatabaseConfig.SCHEMA_NAME)
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
 class Platform {

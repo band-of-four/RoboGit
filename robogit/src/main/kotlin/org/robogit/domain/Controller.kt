@@ -2,6 +2,7 @@ package org.robogit.domain
 
 import lombok.EqualsAndHashCode
 import org.hibernate.annotations.Check
+import org.robogit.config.DatabaseConfig
 import java.io.Serializable
 import javax.persistence.*
 import javax.validation.constraints.Min
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull
  *  analog_inputs - количество аналоговых входов
  */
 @Entity
-@Table(name = "controllers", schema = "s244707")
+@Table(name = "controllers", schema = DatabaseConfig.SCHEMA_NAME)
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
 class Controller : Serializable {

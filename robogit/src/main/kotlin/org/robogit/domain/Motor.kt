@@ -2,6 +2,7 @@ package org.robogit.domain
 
 import lombok.EqualsAndHashCode
 import org.hibernate.annotations.Check
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull
  * power - номинальная мощность
  */
 @Entity
-@Table(name = "motors", schema = "s244707")
+@Table(name = "motors", schema = DatabaseConfig.SCHEMA_NAME)
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
 class Motor {

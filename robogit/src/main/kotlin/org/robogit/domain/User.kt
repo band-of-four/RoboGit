@@ -1,5 +1,6 @@
 package org.robogit.domain
 
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotBlank
  * telegram_id - id в телеграме
  */
 @Entity
-@Table(name = "users", schema = "s244707")
+@Table(name = "users", schema = DatabaseConfig.SCHEMA_NAME)
 class User {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")

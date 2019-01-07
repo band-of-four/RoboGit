@@ -2,6 +2,7 @@ package org.robogit.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import lombok.EqualsAndHashCode
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull
  * unit_price - цена заказа на момент совершения покупки
  */
 @Entity
-@Table(name = "products_orders", schema = "s244707")
+@Table(name = "products_orders", schema = DatabaseConfig.SCHEMA_NAME)
 @EqualsAndHashCode(of = ["id"])
 class ProductOrder {
   @Id

@@ -2,6 +2,7 @@ package org.robogit.domain
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotBlank
  * name - название интерфейса
  */
 @Entity
-@Table(name = "interfaces", schema = "s244707")
+@Table(name = "interfaces", schema = DatabaseConfig.SCHEMA_NAME)
 class Interface {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "interface_gen")

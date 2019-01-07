@@ -1,6 +1,7 @@
 package org.robogit.domain
 
 import lombok.EqualsAndHashCode
+import org.robogit.config.DatabaseConfig
 import java.io.Serializable
 import java.util.*
 import javax.persistence.*
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotBlank
  * amount - общее количество товаров
  */
 @Entity
-@Table(name = "information", schema = "s244707")
+@Table(name = "information", schema = DatabaseConfig.SCHEMA_NAME)
 @EqualsAndHashCode(of = ["id"])
 class Information : Serializable {
   @Id
