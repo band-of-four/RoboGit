@@ -5,7 +5,8 @@ enum class Type(name: String) {
   MECHANIC_DETAIL("Механическая деталь"),
   MOTOR("Мотор"),
   PLATFORM("Платформа"),
-  CONTROLLER("Контроллер");
+  CONTROLLER("Контроллер"),
+  OTHER_RESOURCES("Прочие ресурсы");
 
   var typeName: String = name
 

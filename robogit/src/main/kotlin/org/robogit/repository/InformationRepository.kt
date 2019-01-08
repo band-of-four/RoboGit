@@ -1,9 +1,12 @@
 package org.robogit.repository
 
 import org.robogit.domain.Information
+import org.robogit.dto.InformationSumDto
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
 interface InformationRepository : CrudRepository<Information, Int> {
+
 
   /**
    * Finds all instances of [Information] with specified [Information.type].
@@ -40,4 +43,7 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * @return List with results.
    */
   fun findByPriceBetween(from: Float, to: Float): List<Information>
+
+  @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductUser p JOIN p.information i GROUP BY i.id ORDER BY s desc")
+  fun findPopular(): List<InformationSumDto?>?;
 }

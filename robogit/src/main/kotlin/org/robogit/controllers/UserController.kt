@@ -2,9 +2,12 @@ package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Controller
+import org.robogit.domain.Information
 import org.robogit.domain.Platform
 import org.robogit.domain.User
+import org.robogit.dto.InformationSumDto
 import org.robogit.repository.ControllerRepository
+import org.robogit.repository.InformationRepository
 import org.robogit.repository.PlatformRepository
 import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +26,8 @@ class UserController {
   private val userRepository: UserRepository? = null
   @Autowired
   private val platformRepository: PlatformRepository? = null
-
+  @Autowired
+  private val informationRepository: InformationRepository? = null
   @Autowired
   private val controllerRepository: ControllerRepository? = null
 
@@ -50,6 +54,12 @@ class UserController {
   fun getPlatform(@PathVariable("id") id: Int?): Platform {
     println("Controller Hello!")
     return platformRepository?.findById(id!!)!!.get()
+  }
+
+  @GetMapping("/information")
+  fun getInformation(): List<InformationSumDto?>? {
+    println("Controller Hello!")
+    return informationRepository?.findPopular()
   }
 
 }
