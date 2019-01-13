@@ -2,6 +2,8 @@ package org.robogit.repository
 
 import org.robogit.domain.Controller
 import org.robogit.domain.Platform
+import org.robogit.dto.PlatformSumDto
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
 interface PlatformRepository: CrudRepository<Platform, Int> {
@@ -144,4 +146,13 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
    * @return List with results.
    */
   fun findByFreqLessThan(freq: Float): List<Platform>
+
+  /**
+   * Возвращает все платформы, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   */
+  @Query("SELECT new org.robogit.dto.PlatformSumDto(pl, sum(p.amount)as s)  FROM Platform pl, ProductUser p " +
+          "JOIN p.information i " +
+          "JOIN pl.information i2 WHERE i.id=i2.id GROUP BY pl.id ORDER BY s desc")
+  fun findPopular(): List<PlatformSumDto?>?
 }

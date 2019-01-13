@@ -44,6 +44,10 @@ interface InformationRepository : CrudRepository<Information, Int> {
    */
   fun findByPriceBetween(from: Float, to: Float): List<Information>
 
-  @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductUser p JOIN p.information i GROUP BY i.id ORDER BY s desc")
-  fun findPopular(): List<InformationSumDto?>?;
+  /**
+   * Возвращает все товары, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   */
+  @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductOrder p JOIN p.information i GROUP BY i.id ORDER BY s desc")
+  fun findPopular(): List<InformationSumDto?>?
 }

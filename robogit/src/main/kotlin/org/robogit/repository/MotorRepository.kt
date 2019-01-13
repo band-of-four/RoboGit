@@ -2,6 +2,8 @@ package org.robogit.repository
 
 import org.robogit.domain.Interface
 import org.robogit.domain.Motor
+import org.robogit.dto.MotorSumDto
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
 interface MotorRepository: CrudRepository<Motor, Int> {
@@ -78,4 +80,13 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    * @return List with results.
    */
   fun findByMotorInterface(motorInterface: Interface): List<Motor>
+
+  /**
+   * Возвращает все моторы, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   */
+  @Query("SELECT new org.robogit.dto.MotorSumDto(m, sum(p.amount)as s)  FROM Motor m, ProductOrder p " +
+          "JOIN p.information i " +
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+  fun findPopular(): List<MotorSumDto?>?
 }

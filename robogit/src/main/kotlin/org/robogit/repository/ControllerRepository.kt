@@ -2,6 +2,8 @@ package org.robogit.repository
 
 import org.robogit.domain.Controller
 import org.robogit.domain.Interface
+import org.robogit.dto.ControllerSumDto
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
 interface ControllerRepository : CrudRepository<Controller, Int> {
@@ -100,4 +102,13 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
    * @return List with results.
    */
   fun findByControllerInterface(controllerInterface: Interface): List<Controller>
+
+  /**
+   * Возвращает все контроллеры, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   */
+  @Query("SELECT new org.robogit.dto.ControllerSumDto(c, sum(p.amount)as s)  FROM Controller c, ProductOrder p " +
+          "JOIN p.information i " +
+          "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
+  fun findPopular(): List<ControllerSumDto?>?
 }

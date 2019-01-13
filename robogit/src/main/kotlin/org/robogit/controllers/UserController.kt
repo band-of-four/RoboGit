@@ -1,15 +1,9 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
-import org.robogit.domain.Controller
-import org.robogit.domain.Information
-import org.robogit.domain.Platform
-import org.robogit.domain.User
-import org.robogit.dto.InformationSumDto
-import org.robogit.repository.ControllerRepository
-import org.robogit.repository.InformationRepository
-import org.robogit.repository.PlatformRepository
-import org.robogit.repository.UserRepository
+import org.robogit.domain.*
+import org.robogit.dto.*
+import org.robogit.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,6 +24,12 @@ class UserController {
   private val informationRepository: InformationRepository? = null
   @Autowired
   private val controllerRepository: ControllerRepository? = null
+  @Autowired
+  private val mechanicDetailRepository: MechanicDetailRepository? = null
+  @Autowired
+  private val motorRepository: MotorRepository? = null
+  @Autowired
+  private val sensorRepository: SensorRepository? = null
 
   @GetMapping("/all/{id}")
   fun getAll(@PathVariable("id") id: Int?): User {
@@ -62,4 +62,33 @@ class UserController {
     return informationRepository?.findPopular()
   }
 
+    @GetMapping("/controller")
+    fun getController(): List<ControllerSumDto?>? {
+        println("Controller Hello!")
+        return controllerRepository?.findPopular()
+    }
+
+    @GetMapping("/mechanic_detail")
+    fun getInterface(): List<MechanicDetailSumDto?>? {
+        println("Controller Hello!")
+        return mechanicDetailRepository?.findPopular()
+    }
+
+    @GetMapping("/motor")
+    fun getMotor(): List<MotorSumDto?>? {
+        println("Controller Hello!")
+        return motorRepository?.findPopular()
+    }
+
+    @GetMapping("/platform")
+    fun getPlatform(): List<PlatformSumDto?>? {
+        println("Controller Hello!")
+        return platformRepository?.findPopular()
+    }
+
+    @GetMapping("/sensor")
+    fun getSensor(): List<SensorSumDto?>? {
+        println("Controller Hello!")
+        return sensorRepository?.findPopular()
+    }
 }
