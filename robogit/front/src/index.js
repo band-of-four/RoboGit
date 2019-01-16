@@ -1,12 +1,35 @@
-import React from "react";
-import ReactDOM from "react-dom";
-// this line is new
-// we now have some nice styles on our react app
-import "index.scss";
-let HelloWorld = () => {
-  return <h1>Hello there World!</h1>
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {createStore, applyMiddleware} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import {syncHistoryWithStore} from 'react-router-redux';
+import {Router, Route, browserHistory} from 'react-router';
+import {Provider} from 'react-redux';
+import { Switch } from 'react-router-dom';
+
+import reducers from 'reducers';
+import Layout from 'containers/layoyt';
+import Products from 'containers/products';
+
+
+import { createBrowserHistory } from 'history';
+
+const store = createStore(reducers, composeWithDevTools(
+    applyMiddleware(thunk)
+));
+const history = syncHistoryWithStore(createBrowserHistory(), store);
+
+
 ReactDOM.render(
-  <HelloWorld/>,
-  document.getElementById("root")
+    <Provider store={store}>
+        <Router history={history}>
+            <Layout>
+                <Switch>
+                    <Route path='/' component={Products} />
+                </Switch>
+            </Layout>
+        </Router>
+    </Provider>,
+    document.getElementById('app')
 );
