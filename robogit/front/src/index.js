@@ -11,7 +11,7 @@ import { Switch } from 'react-router-dom';
 import reducers from 'reducers';
 import Layout from 'containers/layoyt';
 import Products from 'containers/products';
-
+import Platforms from 'containers/platforms';
 
 import { createBrowserHistory } from 'history';
 
@@ -27,6 +27,7 @@ ReactDOM.render(
             <Layout>
                 <Switch>
                     <Route path='/' component={Products} />
+                    <Route path='/platforms' component={Platforms} />
                 </Switch>
             </Layout>
         </Router>
