@@ -1,5 +1,5 @@
 {
-  "name": "react-webpack-babel-tutorial",
+  "name": "robogit",
   "version": "1.0.0",
   "description": "This is a Tutorial to showcase the usage of React with Webpack and Babel",
   "main": "index.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/react-webpack-babel-tutorial.git"
+    "url": "git+https://github.com/creativetimofficial/robogit.git"
   },
   "keywords": [
     "react",
@@ -22,9 +22,9 @@
   "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/react-webpack-babel-tutorial/issues"
+    "url": "https://github.com/creativetimofficial/robogit/issues"
   },
-  "homepage": "https://github.com/creativetimofficial/react-webpack-babel-tutorial#readme",
+  "homepage": "https://github.com/creativetimofficial/robogit#readme",
   "devDependencies": {
     "@babel/core": "7.0.1",
     "@babel/node": "7.0.0",
@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "has-values": "^2.0.1",
+    "inherits": "^2.0.3",
     "react": "16.5.1",
     "react-dom": "16.5.1",
     "react-redux": "^6.0.0",
