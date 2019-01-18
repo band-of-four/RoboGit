@@ -2,6 +2,8 @@ package org.robogit.repository
 
 import org.robogit.domain.Information
 import org.robogit.dto.InformationSumDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
@@ -43,6 +45,14 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * @return List with results.
    */
   fun findByPriceBetween(from: Float, to: Float): List<Information>
+
+  /**
+   * Возвращает страницу товаров, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   * @param pageable - номер страницы
+   */
+  @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductOrder p JOIN p.information i GROUP BY i.id ORDER BY s desc")
+  fun findPagePopular(pageable:Pageable): Page<InformationSumDto?>?
 
   /**
    * Возвращает все товары, отсортированные по популярности (количеству совершенных покупок)

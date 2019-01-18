@@ -5,6 +5,7 @@ import org.robogit.domain.Platform
 import org.robogit.dto.PlatformSumDto
 import org.robogit.repository.PlatformRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,7 +18,7 @@ class PlatformController {
     @Autowired
     private val platformRepository: PlatformRepository? = null
 
-    @GetMapping("/platform/{id}")
+    @GetMapping("/platform/info/{id}")
     fun getPlatform(@PathVariable("id") id: Int?): Platform {
         println("Controller!")
         return platformRepository?.findById(id!!)!!.get()
@@ -27,5 +28,12 @@ class PlatformController {
     fun getPlatform(): List<PlatformSumDto?>? {
         println("Controller!")
         return platformRepository?.findPopular()
+    }
+
+    @GetMapping("/platform/{page}")
+    fun getPlatformByPage(@PathVariable("page") numPage: Int): List<PlatformSumDto?>? {
+        println("Controller!")
+        val page = PageRequest.of(numPage, 50)
+        return platformRepository?.findPagePopular(page)?.content
     }
 }

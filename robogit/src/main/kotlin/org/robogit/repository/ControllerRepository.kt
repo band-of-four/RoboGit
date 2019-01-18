@@ -5,6 +5,8 @@ import org.robogit.domain.Interface
 import org.robogit.dto.ControllerSumDto
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface ControllerRepository : CrudRepository<Controller, Int> {
 
@@ -111,4 +113,14 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
           "JOIN p.information i " +
           "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
   fun findPopular(): List<ControllerSumDto?>?
+
+  /**
+   * Возвращает страницу контроллеров, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   * @param pageable - номер страницы
+   */
+  @Query("SELECT new org.robogit.dto.ControllerSumDto(c, sum(p.amount)as s)  FROM Controller c, ProductOrder p " +
+          "JOIN p.information i " +
+          "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
+  fun findPagePopular(pageable: Pageable): Page<ControllerSumDto?>?
 }

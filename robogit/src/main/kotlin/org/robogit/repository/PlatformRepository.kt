@@ -3,6 +3,8 @@ package org.robogit.repository
 import org.robogit.domain.Controller
 import org.robogit.domain.Platform
 import org.robogit.dto.PlatformSumDto
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
@@ -155,4 +157,14 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
           "JOIN p.information i " +
           "JOIN pl.information i2 WHERE i.id=i2.id GROUP BY pl.id ORDER BY s desc")
   fun findPopular(): List<PlatformSumDto?>?
+
+  /**
+   * Возвращает страницу платформ, отсортированные по популярности (количеству совершенных покупок)
+   * и количество купленных товаров
+   * @param pageable - номер страницы
+   */
+  @Query("SELECT new org.robogit.dto.PlatformSumDto(m, sum(p.amount)as s)  FROM Platform m, ProductOrder p " +
+          "JOIN p.information i " +
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+  fun findPagePopular(pageable: Pageable): Page<PlatformSumDto?>?
 }
