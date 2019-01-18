@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 //всякая хрень для тестов
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 @Slf4j
 class UserController {
   @Autowired
@@ -91,4 +91,10 @@ class UserController {
         println("Controller Hello!")
         return sensorRepository?.findPopular()
     }
+
+  @GetMapping("/information_top")
+  fun getInformationTop(): List<InformationSumDto?>? {
+    println("Controller Hello!")
+    return informationRepository?.findPopular()?.take(10)
+  }
 }
