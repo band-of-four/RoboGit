@@ -74,12 +74,26 @@ interface OrderRepository : CrudRepository<Order, Int> {
   /**
    * Возвращает таблицу c заказом заказа
    * @param idOrder  - номер заказа
+   * @param userId - ид пользователя
+   */
+  @Query("SELECT new org.robogit.dto.OrderDto" +
+          "(i.name as name, p.amount as amount, p.unit_price as price, (p.amount*p.unit_price) as sum) " +
+          "FROM ProductOrder p JOIN Information i ON (p.information.id = i.id) " +
+          "JOIN p.order po " +
+          "JOIN po.user pou " +
+          "WHERE p.order.id = :idOrder AND pou.id = :userId")
+  fun getOrderByUserIdAndIdOrder(@Param("userId") userId: Int, @Param("idOrder") idOrder: Int?): List<OrderDto?>?
+
+  /**
+   * Возвращает таблицу c заказом заказа
+   * @param idOrder  - номер заказа
    */
   @Query("SELECT new org.robogit.dto.OrderDto" +
           "(i.name as name, p.amount as amount, p.unit_price as price, (p.amount*p.unit_price) as sum) " +
           "FROM ProductOrder p JOIN Information i ON (p.information.id = i.id)" +
           "WHERE p.order.id = ?#{[0]}")
   fun getOrderByIdOrder( idOrder: Int?): List<OrderDto?>?
+
 
   /**
    * Возвращает сумму заказа
@@ -89,4 +103,14 @@ interface OrderRepository : CrudRepository<Order, Int> {
           "FROM ProductOrder p JOIN Information i ON (p.information.id = i.id)" +
           "WHERE p.order.id = ?#{[0]}")
   fun getOrderSumByIdOrder( idOrder: Int?): List<OrderSumDto?>?
+
+  /**
+   * Возвращает сумму заказа
+   * @param idOrder  - номер заказа
+   * @param userId - ид пользователя
+   */
+  @Query("SELECT new org.robogit.dto.OrderSumDto(sum(p.unit_price*p.amount))" +
+          "FROM ProductOrder p JOIN Information i ON (p.information.id = i.id)" +
+          "WHERE p.order.id = :idOrder AND p.order.user.id = :userId")
+  fun getOrderSumByUserIdAndIdOrder(@Param("userId") userId: Int, @Param("idOrder") idOrder: Int?): List<OrderSumDto?>?
 }
