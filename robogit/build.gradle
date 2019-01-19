@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.51'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
     id 'org.springframework.boot' version '2.1.0.RELEASE'
 }
 
@@ -11,24 +11,14 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
     compile "org.springframework.boot:spring-boot-starter-data-jpa:2.1.0.RELEASE"
-    // https://mvnrepository.com/artifact/javax.validation/validation-api
     compile "javax.validation:validation-api:2.0.1.Final"
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    compile ('org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE')/* {
-        exclude(module:"spring-boot-starter-tomcat")
-    }*/
-//    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
-    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile('org.springframework.boot:spring-boot-starter-web:2.1.0.RELEASE')
     compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
-// https://mvnrepository.com/artifact/org.projectlombok/lombok
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
     compile 'org.jetbrains.kotlin:kotlin-reflect:1.1.51'
-
 }
 
 compileJava {
@@ -39,32 +29,34 @@ compileJava {
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task npmInstall(type: Exec) {
-    workingDir 'front'
-    commandLine 'npm', 'install'
-}
-
-task npmBuild(type: Exec) {
-    dependsOn npmInstall
-    workingDir 'front'
-    commandLine 'npm', 'run', 'webpack'
-}
-
-task clearStatic(type: Delete) {
-    delete file('src/main/resources/static').listFiles()
-}
-
-task copyStatic(type: Copy) {
-    dependsOn npmBuild
-    dependsOn clearStatic
-    from 'front/build/'
-    into 'src/main/resources/static/'
-}
-
-processResources() {
-    dependsOn copyStatic
-}
+// FIXME remove front dependencies
+//task npmInstall(type: Exec) {
+//    workingDir 'front'
+//    commandLine 'npm', 'install'
+//}
+//
+//task npmBuild(type: Exec) {
+//    dependsOn npmInstall
+//    workingDir 'front'
+//    commandLine 'npm', 'run', 'webpack'
+//}
+//
+//task clearStatic(type: Delete) {
+//    delete file('src/main/resources/static').listFiles()
+//}
+//
+//task copyStatic(type: Copy) {
+//    dependsOn npmBuild
+//    dependsOn clearStatic
+//    from 'front/build/'
+//    into 'src/main/resources/static/'
+//}
+//
+//processResources() {
+//    dependsOn copyStatic
+//}
