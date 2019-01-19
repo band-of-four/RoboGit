@@ -19,9 +19,9 @@ class ControllerController {
     private val controllerRepository: ControllerRepository? = null
 
     @GetMapping("/controller/info/{id}")
-    fun getController(@PathVariable("id") id: Int?): Controller {
+    fun getController(@PathVariable("id") id: Int): Controller? {
         println("Controller!")
-        return controllerRepository!!.findAll().iterator().next()
+        return controllerRepository?.findById(id)?.get()
     }
 
     @GetMapping("/controller")
