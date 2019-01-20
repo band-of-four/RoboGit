@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull
  *  max_voltage - максимальное напряжение
  */
 @Entity
-@Table(name = "controllers", schema = DatabaseConfig.SCHEMA_NAME)
+@Table(name = "sensors", schema = DatabaseConfig.SCHEMA_NAME)
 @Check(constraints = "max_voltage > min_voltage")
 @EqualsAndHashCode
 class Sensor {

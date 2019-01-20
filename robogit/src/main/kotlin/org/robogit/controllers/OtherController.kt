@@ -6,10 +6,7 @@ import org.robogit.dto.InformationSumDto
 import org.robogit.repository.InformationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
@@ -24,5 +21,14 @@ class OtherController {
         println("Controller!")
         val page = PageRequest.of(numPage, 50)
         return informationRepository?.findPopularOther(page)?.content
+    }
+
+    @GetMapping("/other/filter")
+    fun filter(@RequestParam(defaultValue = "0", required = false) pageNum: Int,
+               @RequestParam(required = false) min_price: Float?,
+               @RequestParam(required = false) max_price: Float?) : List<Information?>?{
+        println("Controller!")
+        val page = PageRequest.of(pageNum, 50)
+        return informationRepository?.filterForOther(page, min_price, max_price)?.content
     }
 }

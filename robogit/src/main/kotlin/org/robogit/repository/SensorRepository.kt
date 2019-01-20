@@ -89,4 +89,31 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
    */
   @Query("SELECT s FROM Sensor s WHERE s.id = :id")
   fun findSensorById(@Param("id") id: Int) : Sensor?
+
+  /**
+   * Применяет фильтры к сенсорам
+   * @param min_price - минимальная цена
+   * @param max_price - максимальная цена
+   * @param min_min_voltage - минимальное мин.значение voltage
+   * @param max_min_voltage - максимальное мин.значение voltage
+   * @param min_max_voltage - минимальное макс.значение voltage
+   * @param max_max_voltage - максимальное макс.значение voltage
+   * @return страницу результата
+   */
+  //FIXME я возвращаю что-то не то
+  @Query("SELECT s FROM Sensor s JOIN s.information si WHERE " +
+          "si.type = org.robogit.domain.Type.SENSOR AND" +
+          "(:min_price IS NULL OR :min_price < si.price) AND" +
+          "(:max_price IS NULL OR :max_price > si.price) AND" +
+          "(:min_min_voltage IS NULL OR :min_min_voltage < s.minVoltage) AND" +
+          "(:max_min_voltage IS NULL OR :max_min_voltage > s.minVoltage) AND" +
+          "(:min_max_voltage IS NULL OR :min_max_voltage < s.maxVoltage) AND" +
+          "(:max_max_voltage IS NULL OR :max_max_voltage > s.maxVoltage)")
+  fun filter( pagable: Pageable,
+              @Param("min_price") min_price: Float?,
+              @Param("max_price") max_price: Float?,
+              @Param("min_min_voltage") min_min_voltage: Float?,
+              @Param("max_min_voltage") max_min_voltage: Float?,
+              @Param("min_max_voltage") min_max_voltage: Float?,
+              @Param("max_max_voltage") max_max_voltage: Float?) : Page<Sensor>
 }

@@ -112,4 +112,35 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    */
   @Query("SELECT m FROM Motor m WHERE m.id = :id")
   fun findMotorById(@Param("id") id: Int) : Motor?
+
+  /**
+   * Применяет фильтры к маторам
+   * @param min_price - минимальная цена
+   * @param max_price - максимальная цена
+   * @param min_min_voltage - минимальное мин.значение voltage
+   * @param max_min_voltage - максимальное мин.значение voltage
+   * @param min_max_voltage - минимальное макс.значение voltage
+   * @param max_max_voltage - максимальное макс.значение voltage
+   * @param min_power - минимальная мощности
+   * @param max_power - максимальная мощности
+   * @return страницу результата
+   */
+  @Query("SELECT m FROM Motor m JOIN m.information mi WHERE" +
+          "(:min_price IS NULL OR :min_price < mi.price) AND" +
+          "(:max_price IS NULL OR :max_price > mi.price) AND" +
+          "(:min_min_voltage IS NULL OR :min_min_voltage < m.minVoltage) AND" +
+          "(:max_min_voltage IS NULL OR :max_min_voltage > m.minVoltage) AND" +
+          "(:min_max_voltage IS NULL OR :min_max_voltage < m.maxVoltage) AND" +
+          "(:max_max_voltage IS NULL OR :max_max_voltage > m.maxVoltage) AND" +
+          "(:min_power IS NULL OR :min_power < m.power) AND" +
+          "(:max_power IS NULL OR :max_power > m.power)")
+  fun filter( pagable: Pageable,
+              @Param("min_price") min_price: Float?,
+              @Param("max_price") max_price: Float?,
+              @Param("min_min_voltage") min_min_voltage: Float?,
+              @Param("max_min_voltage") max_min_voltage: Float?,
+              @Param("min_max_voltage") min_max_voltage: Float?,
+              @Param("max_max_voltage") max_max_voltage: Float?,
+              @Param("min_power") min_power: Float?,
+              @Param("max_power") max_power: Float?) : Page<Motor>
 }
