@@ -50,5 +50,5 @@ class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     @NotNull
-    private val role: Role? = null
+    var role: Role? = null
 }
