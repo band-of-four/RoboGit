@@ -1,16 +1,10 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
-import org.robogit.domain.Controller
-import org.robogit.domain.ProductUser
-import org.robogit.domain.User
 import org.robogit.dto.CardElementDto
-import org.robogit.dto.ControllerSumDto
-import org.robogit.repository.ControllerRepository
 import org.robogit.repository.InformationRepository
 import org.robogit.repository.ProductUserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -31,6 +25,15 @@ class CardController {
         val userId = 100;
         return productUserRepository?.findAllByUserId(userId)
     }
+
+//    @GetMapping("/get")
+//    fun getCard(authentication: Authentication): List<CardElementDto>? {
+//        println("get card!")
+//        val userDetails = (OpenAmUserDetails) authentication.details
+//                //User user = SecurityContextHolder.getCurrentInstance.
+////        val userId = ;
+//                return productUserRepository?.findAllByUserId(userDetails.userId)
+//    }
 
     @PostMapping("/add")
     fun addToCard(@RequestParam partId: Int, @RequestParam amount: Int): ResponseEntity<HttpStatus> {

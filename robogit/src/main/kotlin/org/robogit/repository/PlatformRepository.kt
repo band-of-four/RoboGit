@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
+import java.util.*
 
 interface PlatformRepository: CrudRepository<Platform, Int> {
 
@@ -167,4 +169,7 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<PlatformSumDto?>?
+
+  @Query("SELECT Platform FROM Platform WHERE i.id = :id")
+  fun findPlatformById(@Param("id") id: Int) : Platform
 }

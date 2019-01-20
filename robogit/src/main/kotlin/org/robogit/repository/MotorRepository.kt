@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 
 interface MotorRepository: CrudRepository<Motor, Int> {
 
@@ -101,4 +102,7 @@ interface MotorRepository: CrudRepository<Motor, Int> {
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<MotorSumDto?>?
+
+  @Query("SELECT Motor FROM Motor WHERE i.id = :id")
+  fun findMotorById(@Param("id") id: Int) : Motor
 }

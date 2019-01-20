@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.query.Param
 
 interface ControllerRepository : CrudRepository<Controller, Int> {
 
@@ -123,4 +124,7 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
           "JOIN p.information i " +
           "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<ControllerSumDto?>?
+
+  @Query("SELECT Controller FROM Controller WHERE i.id = :id")
+  fun findControllerById(@Param("id") id: Int) : Controller
 }

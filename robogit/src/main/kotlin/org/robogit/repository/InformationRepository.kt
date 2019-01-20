@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
+
 
 interface InformationRepository : CrudRepository<Information, Int> {
 
@@ -50,6 +52,7 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * Возвращает страницу товаров, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
    * @param pageable - номер страницы
+   * @return лист результатов
    */
   @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductOrder p JOIN p.information i GROUP BY i.id ORDER BY s desc")
   fun findPagePopular(pageable:Pageable): Page<InformationSumDto?>?
@@ -57,7 +60,34 @@ interface InformationRepository : CrudRepository<Information, Int> {
   /**
    * Возвращает все товары, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
+   * @return лист результатов
    */
   @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductOrder p JOIN p.information i GROUP BY i.id ORDER BY s desc")
   fun findPopular(): List<InformationSumDto?>?
+
+  /**
+   * Возвращает страницу популярных товаров с типом "прочие ресурсы"
+   * @param pageable pageable - номер страницы
+   * @return лист результатов
+   */
+  @Query("SELECT new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s) FROM ProductOrder p JOIN p.information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES GROUP BY i.id ORDER BY s desc")
+  fun findPopularOther(pageable:Pageable): Page<InformationSumDto>
+
+  /**
+   * Возвращает товар типа "прочие ресурсы" по id
+   * @param id - ид товара
+   * @return товар
+   */
+  @Query("SELECT Information FROM Information i i.type = org.robogit.domain.Type.OTHER_RESOURCES AND i.id = :id")
+  fun findOtherById(@Param("id") id: Int) : Information
+
+  /**
+   * Возвращает все товары типа "прочие ресурсы"
+   * @return лист результата
+   */
+  @Query("SELECT Information FROM Information i i.type = org.robogit.domain.Type.OTHER_RESOURCES")
+  fun findOther() : List<Information>
+
+  @Query("SELECT Information FROM Information WHERE i.id = :id")
+  fun findInformationById(@Param("id") id: Int) : Information
 }
