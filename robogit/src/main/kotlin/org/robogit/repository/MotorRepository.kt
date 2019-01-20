@@ -103,6 +103,6 @@ interface MotorRepository: CrudRepository<Motor, Int> {
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<MotorSumDto?>?
 
-  @Query("SELECT Motor FROM Motor WHERE i.id = :id")
+  @Query("SELECT m FROM Motor m WHERE m.id = :id")
   fun findMotorById(@Param("id") id: Int) : Motor
 }

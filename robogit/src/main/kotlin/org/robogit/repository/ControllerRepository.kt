@@ -125,6 +125,6 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
           "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<ControllerSumDto?>?
 
-  @Query("SELECT Controller FROM Controller WHERE i.id = :id")
+  @Query("SELECT c FROM Controller c WHERE c.id = :id")
   fun findControllerById(@Param("id") id: Int) : Controller
 }

@@ -66,7 +66,7 @@ class CardController {
         //User user = SecurityContextHolder.getCurrentInstance.
         val userId = 100;
         val byUserIdAndId = productUserRepository?.findByUserIdAndId(userId, productUserId)
-        if(amount<0){
+        if(amount < 0){
             return ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST)
         }
         byUserIdAndId?.amount = amount

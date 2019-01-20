@@ -170,6 +170,6 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<PlatformSumDto?>?
 
-  @Query("SELECT Platform FROM Platform WHERE i.id = :id")
+  @Query("SELECT p FROM Platform p WHERE p.id = :id")
   fun findPlatformById(@Param("id") id: Int) : Platform
 }

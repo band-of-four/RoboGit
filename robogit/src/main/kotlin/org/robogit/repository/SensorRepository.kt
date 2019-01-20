@@ -80,6 +80,6 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<SensorSumDto?>?
 
-  @Query("SELECT Sensor FROM Sensor WHERE i.id = :id")
+  @Query("SELECT s FROM Sensor s WHERE s.id = :id")
   fun findSensorById(@Param("id") id: Int) : Sensor
 }
