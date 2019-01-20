@@ -16,9 +16,20 @@ interface ProductUserRepository: CrudRepository<ProductUser, Int> {
    */
   fun findByUser(user: User): List<ProductUser>
 
+  /**
+   * Находит товар в корзине по ид товара и ид юзера
+   * @param userId - ид юзера
+   * @param id - ид товара
+   * @return
+   */
   @Query("SELECT pu FROM ProductUser pu JOIN pu.user puu WHERE puu.id = :userId AND pu.id = :id")
   fun findByUserIdAndId(@Param("userId") userId:Int, @Param("id") id:Int) : ProductUser
 
+  /**
+   * Возвращает все товары в корзине юзера по ид
+   * @param userId - ид юзера
+   * @return Лист результатов
+   */
   @Query("SELECT new org.robogit.dto.CardElementDto(pu.information, pu.amount, pu.id) FROM ProductUser pu JOIN pu.user puu WHERE puu.id = :userId")
   fun findAllByUserId(@Param("userId") userId:Int) : List<CardElementDto>?
 }

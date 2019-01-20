@@ -154,6 +154,7 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
   /**
    * Возвращает все платформы, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.PlatformSumDto(pl, sum(p.amount)as s)  FROM Platform pl, ProductUser p " +
           "JOIN p.information i " +
@@ -164,12 +165,18 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
    * Возвращает страницу платформ, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
    * @param pageable - номер страницы
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.PlatformSumDto(m, sum(p.amount)as s)  FROM Platform m, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<PlatformSumDto?>?
 
+  /**
+   * Возвращает платформу по ид
+   * @param id - ид детали
+   *
+   */
   @Query("SELECT p FROM Platform p WHERE p.id = :id")
   fun findPlatformById(@Param("id") id: Int) : Platform
 }

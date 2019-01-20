@@ -88,6 +88,10 @@ interface InformationRepository : CrudRepository<Information, Int> {
   @Query("SELECT i FROM Information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES")
   fun findOther() : List<Information>
 
+  /**
+   * Возвращает [Information] по ид
+   * @param id - ид товара
+   */
   @Query("SELECT i FROM Information i WHERE i.id = :id")
   fun findInformationById(@Param("id") id: Int) : Information
 }

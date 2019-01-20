@@ -87,6 +87,7 @@ interface MotorRepository: CrudRepository<Motor, Int> {
   /**
    * Возвращает все моторы, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.MotorSumDto(m, sum(p.amount)as s)  FROM Motor m, ProductOrder p " +
           "JOIN p.information i " +
@@ -97,12 +98,18 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    * Возвращает страницу моторов, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
    * @param pageable - номер страницы
+   * @return дист результатов
    */
   @Query("SELECT new org.robogit.dto.MotorSumDto(m, sum(p.amount)as s)  FROM Motor m, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<MotorSumDto?>?
 
+  /**
+   * Возвращает мотор по id
+   * @param id - ид мотора
+   * @return мотор
+   */
   @Query("SELECT m FROM Motor m WHERE m.id = :id")
   fun findMotorById(@Param("id") id: Int) : Motor
 }

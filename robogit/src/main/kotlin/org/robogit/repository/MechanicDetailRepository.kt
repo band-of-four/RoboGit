@@ -20,6 +20,7 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
   /**
    * Возвращает все механические детали, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.MechanicDetailSumDto(m, sum(p.amount)as s)  FROM MechanicDetail m, ProductOrder p " +
           "JOIN p.information i " +
@@ -30,12 +31,18 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
    * Возвращает страницу механических деталей, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
    * @param pageable - номер страницы
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.MechanicDetailSumDto(m, sum(p.amount)as s)  FROM MechanicDetail m, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<MechanicDetailSumDto?>?
 
+  /**
+   *  Возвращает механическую деталь по ид
+   *  @param id - ид детали
+   *  @return деталь
+   */
   @Query("SELECT m FROM MechanicDetail m WHERE m.id = :id")
   fun findMechanicDetailById(@Param("id") id: Int) : MechanicDetail
 }

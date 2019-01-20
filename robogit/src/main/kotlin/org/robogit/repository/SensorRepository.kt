@@ -64,6 +64,7 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
   /**
    * Возвращает все сенсоры, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.SensorSumDto(s, sum(p.amount)as sm)  FROM Sensor s, ProductOrder p " +
           "JOIN p.information i " +
@@ -74,12 +75,18 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
    * Возвращает страницу сенсоров, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
    * @param pageable - номер страницы
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.SensorSumDto(m, sum(p.amount)as s)  FROM Sensor m, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<SensorSumDto?>?
 
+  /**
+   * Возвращает сенсоры по ид
+   * @param id - ид сенсора
+   * @return лист результатов
+   */
   @Query("SELECT s FROM Sensor s WHERE s.id = :id")
   fun findSensorById(@Param("id") id: Int) : Sensor
 }
