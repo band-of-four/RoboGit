@@ -3,11 +3,13 @@ package org.robogit.controllers
 import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Card
 import org.robogit.domain.ProductCard
+import org.robogit.domain.ProductUser
 import org.robogit.domain.User
 import org.robogit.dto.CardElementDto
 import org.robogit.repository.CardRepository
 import org.robogit.repository.InformationRepository
 import org.robogit.repository.ProductUserRepository
+import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,6 +27,9 @@ class CardController {
 
   @Autowired
   private val cardRepository: CardRepository? = null
+
+  @Autowired
+  private val userRepository: UserRepository? = null
 
   @GetMapping("/get")
   fun getCard(): List<CardElementDto>? {
@@ -87,7 +92,7 @@ class CardController {
     // User user = SecurityContextHolder.getCurrentInstance.
     val user = User().apply { id = 100 } // FIXME
     val products = productUserRepository?.findAllByUserId(user.id
-        ?: throw IllegalArgumentException("Not authorized user ${user.login}"))
+        ?: throw IllegalArgumentException("Not authorized user ${user.login}")) // FIXME maybe should return null
     val cardToSave = Card().apply { this.user = user }
     products?.forEach {
       (cardToSave.productCards as MutableSet<ProductCard>).add(ProductCard().apply {
@@ -100,5 +105,41 @@ class CardController {
     return savedCard?.id
   }
 
-  // TODO add method for cleaning user's card
+  @PostMapping("/getShared")
+  fun getSharedCard(@RequestParam sharedId: Int): Card? {
+    val card = cardRepository?.findById(sharedId)
+    return if (card?.isPresent!!) {
+      card.get()
+    } else {
+      null
+    }
+  }
+
+  @PostMapping("/copyShared")
+  fun copySharedCardToLocal(@RequestParam sharedId: Int): ResponseEntity<HttpStatus> {
+    // User user = SecurityContextHolder.getCurrentInstance.
+    val user = User().apply { id = 100 } // FIXME
+    val sharedCard = getSharedCard(sharedId)
+        ?: throw IllegalArgumentException("Shared card with id: $sharedId not found") // FIXME maybe should return bad http status
+    cleanLocalCard()
+    sharedCard.productCards.forEach {
+      (user.products as MutableSet<ProductUser>).add(ProductUser().apply {
+        this.user = user
+        this.amount = it.amount
+        this.information = it.information
+      })
+    }
+    userRepository?.save(user)
+    return ResponseEntity(HttpStatus.OK)
+  }
+
+  @PostMapping("/clean")
+  fun cleanLocalCard(): ResponseEntity<HttpStatus> {
+    // User user = SecurityContextHolder.getCurrentInstance.
+    val user = User().apply { id = 100 } // FIXME
+    (user.products as MutableSet<ProductUser>).clear()
+    userRepository?.save(user)
+    return ResponseEntity(HttpStatus.OK)
+  }
+
 }
