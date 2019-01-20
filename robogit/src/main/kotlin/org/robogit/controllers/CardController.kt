@@ -22,7 +22,7 @@ class CardController {
     fun getCard(): List<CardElementDto>? {
         println("get card!")
         //User user = SecurityContextHolder.getCurrentInstance.
-        val userId = 100;
+        val userId = 100
         return productUserRepository?.findAllByUserId(userId)
     }
 
@@ -54,7 +54,7 @@ class CardController {
     fun removeFromCard(@RequestParam productUserId: Int): ResponseEntity<HttpStatus> {
         println("Controller!")
         //User user = SecurityContextHolder.getCurrentInstance.
-        val userId = 100;
+        val userId = 100
         val byUserIdAndId = productUserRepository?.findByUserIdAndId(userId, productUserId);
         productUserRepository?.delete(byUserIdAndId!!)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
@@ -64,7 +64,7 @@ class CardController {
     fun setAmount(@RequestParam productUserId: Int,  @RequestParam amount: Int): ResponseEntity<HttpStatus> {
         println("Controller!")
         //User user = SecurityContextHolder.getCurrentInstance.
-        val userId = 100;
+        val userId = 100
         val byUserIdAndId = productUserRepository?.findByUserIdAndId(userId, productUserId)
         if(amount < 0){
             return ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST)
