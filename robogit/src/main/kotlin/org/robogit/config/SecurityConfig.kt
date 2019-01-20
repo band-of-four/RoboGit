@@ -40,8 +40,9 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .authorizeRequests()
                 .antMatchers("/login", "/logout").permitAll()
                 .antMatchers("/api/order/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
+                .antMatchers("/api/product/**").hasAnyAuthority(Role.ADMIN.toString(), Role.EMPLOYEE.toString())
                 .antMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.toString())
-                .antMatchers("/api/information/**").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .and().formLogin().loginPage("/login")
                 .and().logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler)
     }
