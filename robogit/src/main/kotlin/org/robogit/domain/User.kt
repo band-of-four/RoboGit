@@ -3,10 +3,6 @@ package org.robogit.domain
 import org.robogit.config.DatabaseConfig
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
-import javax.print.DocFlavor.STRING
-import javax.persistence.JoinColumn
-import javax.persistence.CollectionTable
-import javax.persistence.ElementCollection
 import javax.validation.constraints.NotNull
 
 
@@ -38,6 +34,9 @@ class User {
 
     @OneToMany(mappedBy = "user")
     var orders: Set<Order> = HashSet()
+
+    @OneToMany(mappedBy = "user")
+    var sharedCards: Set<Card> = HashSet()
 
     @OneToMany(mappedBy = "user")
     var repositories: Set<Repository> = HashSet()
