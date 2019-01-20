@@ -178,5 +178,5 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
    *
    */
   @Query("SELECT p FROM Platform p WHERE p.id = :id")
-  fun findPlatformById(@Param("id") id: Int) : Platform
+  fun findPlatformById(@Param("id") id: Int) : Platform?
 }

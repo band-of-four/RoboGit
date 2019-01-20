@@ -79,7 +79,7 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * @return товар
    */
   @Query("SELECT i FROM Information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES AND i.id = :id")
-  fun findOtherById(@Param("id") id: Int) : Information
+  fun findOtherById(@Param("id") id: Int) : Information?
 
   /**
    * Возвращает все товары типа "прочие ресурсы"
@@ -93,5 +93,5 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * @param id - ид товара
    */
   @Query("SELECT i FROM Information i WHERE i.id = :id")
-  fun findInformationById(@Param("id") id: Int) : Information
+  fun findInformationById(@Param("id") id: Int) : Information?
 }

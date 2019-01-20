@@ -10,5 +10,5 @@ interface CardRepository: CrudRepository<Card, Int> {
    * @param user is an owner of the [Card]
    * @return list of [Card]s owned by [user]
    */
-  fun findAllByUser(user: User): List<Card>
+  fun findAllByUser(user: User): List<Card>?
 }

@@ -34,13 +34,16 @@ class ProductOrder {
   @NotNull
   var unit_price: Float? = null
 
+
+  @Column
+  var name: String ?= null
+
   @ManyToOne
   @NotNull
   @JoinColumn(name = "id_order")
   var order: Order? = null
 
   @ManyToOne
-  @NotNull
   @JoinColumn(name = "id_product")
   var information: Information? = null
 

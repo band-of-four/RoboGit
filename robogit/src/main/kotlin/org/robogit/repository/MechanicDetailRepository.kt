@@ -44,5 +44,5 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
    *  @return деталь
    */
   @Query("SELECT m FROM MechanicDetail m WHERE m.id = :id")
-  fun findMechanicDetailById(@Param("id") id: Int) : MechanicDetail
+  fun findMechanicDetailById(@Param("id") id: Int) : MechanicDetail?
 }

@@ -113,7 +113,7 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
   @Query("SELECT new org.robogit.dto.ControllerSumDto(c, sum(p.amount)as s)  FROM Controller c, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
-  fun findPopular(): List<ControllerSumDto?>?
+  fun findPopular(): List<ControllerSumDto?>
 
   /**
    * Возвращает страницу контроллеров, отсортированные по популярности (количеству совершенных покупок)
@@ -130,5 +130,5 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
    * @param id - ид контроллера
    */
   @Query("SELECT c FROM Controller c WHERE c.id = :id")
-  fun findControllerById(@Param("id") id: Int) : Controller
+  fun findControllerById(@Param("id") id: Int) : Controller?
 }

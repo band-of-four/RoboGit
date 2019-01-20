@@ -43,9 +43,7 @@ class CardController {
 //    fun getCard(authentication: Authentication): List<CardElementDto>? {
 //        println("get card!")
 //        val userDetails = (OpenAmUserDetails) authentication.details
-//                //User user = SecurityContextHolder.getCurrentInstance.
-////        val userId = ;
-//                return productUserRepository?.findAllByUserId(userDetails.userId)
+//        return productUserRepository?.findAllByUserId(userDetails.userId)
 //    }
 
   @PostMapping("/add")

@@ -27,6 +27,12 @@ class ProductController {
     private val motorRepository: MotorRepository? = null
     @Autowired
     private val sensorRepository: SensorRepository? = null
+    @Autowired
+    private val productUserRepository: ProductUserRepository? = null
+    @Autowired
+    private val productOrderRepository: ProductOrderRepository? = null
+    @Autowired
+    private val productCardRepository: ProductCardRepository? = null
 
     @PostMapping("/addPlatform")
     fun addPlatform(@RequestBody platformDto: PlatformDto): ResponseEntity<HttpStatus> {
@@ -280,8 +286,24 @@ class ProductController {
 
     @PostMapping("/removePlatform")
     fun removeFromPlatform(@RequestParam id: Int): ResponseEntity<HttpStatus> {
+        println("ID: "+id)
         val platform = platformRepository?.findPlatformById(id)
+        println(platform)
         val information = informationRepository?.findInformationById(id)
+        val productUser = productUserRepository?.findAllByInformationId(id)
+        val productOrder = productOrderRepository?.findAllByInformationId(id)
+        val productCard = productCardRepository?.findAllByInformationId(id)
+        productCard?.forEach {
+            it.information = null
+            productCardRepository?.save(it)
+        }
+        productOrder?.forEach {
+            it.information = null
+            productOrderRepository?.save(it)
+        }
+        productUser?.forEach {
+            productUserRepository?.delete(it)
+        }
         platformRepository?.delete(platform!!)
         informationRepository?.delete(information!!)
         return ResponseEntity(HttpStatus.OK)
@@ -291,6 +313,20 @@ class ProductController {
     fun removeController(@RequestParam id: Int): ResponseEntity<HttpStatus> {
         val controller = controllerRepository?.findControllerById(id)
         val information = informationRepository?.findInformationById(id)
+        val productUser = productUserRepository?.findAllByInformationId(id)
+        val productOrder = productOrderRepository?.findAllByInformationId(id)
+        val productCard = productCardRepository?.findAllByInformationId(id)
+        productCard?.forEach {
+            it.information = null
+            productCardRepository?.save(it)
+        }
+        productUser?.forEach {
+            productUserRepository?.delete(it)
+        }
+        productOrder?.forEach {
+            it.information = null
+            productOrderRepository?.save(it)
+        }
         controllerRepository?.delete(controller!!)
         informationRepository?.delete(information!!)
         return ResponseEntity(HttpStatus.OK)
@@ -300,6 +336,20 @@ class ProductController {
     fun removeMechanicDetail(@RequestParam id: Int): ResponseEntity<HttpStatus> {
         val mechanicDetail = mechanicDetailRepository?.findMechanicDetailById(id)
         val information = informationRepository?.findInformationById(id)
+        val productUser = productUserRepository?.findAllByInformationId(id)
+        val productOrder = productOrderRepository?.findAllByInformationId(id)
+        val productCard = productCardRepository?.findAllByInformationId(id)
+        productCard?.forEach {
+            it.information = null
+            productCardRepository?.save(it)
+        }
+        productUser?.forEach {
+            productUserRepository?.delete(it)
+        }
+        productOrder?.forEach {
+            it.information = null
+            productOrderRepository?.save(it)
+        }
         mechanicDetailRepository?.delete(mechanicDetail!!)
         informationRepository?.delete(information!!)
         return ResponseEntity(HttpStatus.OK)
@@ -309,6 +359,18 @@ class ProductController {
     fun removeMotor(@RequestBody motorDto: MotorDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
         val motor = motorRepository?.findMotorById(id)
         val information = informationRepository?.findInformationById(id)
+        val productUser = productUserRepository?.findAllByInformationId(id)
+        val productOrder = productOrderRepository?.findAllByInformationId(id)
+        val productCard = productCardRepository?.findAllByInformationId(id)
+        productCard?.forEach {
+            it.information = null
+            productCardRepository?.save(it)
+        }
+        productOrder?.forEach {
+            it.information = null
+            productOrderRepository?.save(it)
+        }
+        productUser?.forEach { productUserRepository?.delete(it) }
         motorRepository?.delete(motor!!)
         informationRepository?.delete(information!!)
         return ResponseEntity(HttpStatus.OK)
@@ -318,6 +380,18 @@ class ProductController {
     fun removeSensor(@RequestParam id: Int): ResponseEntity<HttpStatus> {
         val sensor = sensorRepository?.findSensorById(id)
         val information = informationRepository?.findInformationById(id)
+        val productUser = productUserRepository?.findAllByInformationId(id)
+        val productOrder = productOrderRepository?.findAllByInformationId(id)
+        val productCard = productCardRepository?.findAllByInformationId(id)
+        productCard?.forEach {
+            it.information = null
+            productCardRepository?.save(it)
+        }
+        productOrder?.forEach {
+            it.information = null
+            productOrderRepository?.save(it)
+        }
+        productUser?.forEach { productUserRepository?.delete(it) }
         sensorRepository?.delete(sensor!!)
         informationRepository?.delete(information!!)
         return ResponseEntity(HttpStatus.OK)
@@ -326,6 +400,18 @@ class ProductController {
     @PostMapping("/removeOther")
     fun removeOther(@RequestParam id: Int): ResponseEntity<HttpStatus> {
         val information = informationRepository?.findOtherById(id)
+        val productUser = productUserRepository?.findAllByInformationId(id)
+        val productOrder = productOrderRepository?.findAllByInformationId(id)
+        val productCard = productCardRepository?.findAllByInformationId(id)
+        productCard?.forEach {
+            it.information = null
+            productCardRepository?.save(it)
+        }
+        productOrder?.forEach {
+            it.information = null
+            productOrderRepository?.save(it)
+        }
+        productUser?.forEach { productUserRepository?.delete(it) }
         informationRepository?.delete(information!!)
         return ResponseEntity(HttpStatus.OK)
     }

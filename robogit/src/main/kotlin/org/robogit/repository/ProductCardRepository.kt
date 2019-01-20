@@ -1,25 +1,26 @@
 package org.robogit.repository
 
 import org.robogit.domain.Order
+import org.robogit.domain.ProductCard
 import org.robogit.domain.ProductOrder
 import org.robogit.domain.ProductUser
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 
-interface ProductOrderRepository: CrudRepository<ProductOrder, Int> {
+interface ProductCardRepository: CrudRepository<ProductCard, Int> {
 
   /**
-   * Finds list with instances of [ProductOrder] with specified [order].
+   * Finds list with instances of [ProductCard] with specified [card].
    * @return List with results.
    */
-  fun findByOrder(order: Order): List<ProductOrder>
+  fun findByCard(card: ProductCard): List<ProductCard>
 
   /**
    * Поиск товаров в корзине по informationId
    * @param informationId - ид товара
    * @return лист результата
    */
-  @Query("SELECT pu FROM ProductOrder pu WHERE pu.information.id = :informationId")
-  fun findAllByInformationId(@Param("informationId") informationId: Int) : List<ProductOrder>
+  @Query("SELECT pu FROM ProductCard pu WHERE pu.information.id = :informationId")
+  fun findAllByInformationId(@Param("informationId") informationId:Int) : List<ProductCard>?
 }

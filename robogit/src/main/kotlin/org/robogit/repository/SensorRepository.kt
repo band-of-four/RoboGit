@@ -88,5 +88,5 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
    * @return лист результатов
    */
   @Query("SELECT s FROM Sensor s WHERE s.id = :id")
-  fun findSensorById(@Param("id") id: Int) : Sensor
+  fun findSensorById(@Param("id") id: Int) : Sensor?
 }

@@ -65,9 +65,12 @@ open class OrderController {
         for (item in card) {
             val byUserIdAndId = productUserRepository?.findByUserIdAndId(userOpt.get().id!!, item.productUserId)
             val productOrder = ProductOrder()
+            val information = byUserIdAndId?.information
             productOrder.amount = byUserIdAndId?.amount
-            productOrder.information = byUserIdAndId?.information
+            productOrder.information = information
             productOrder.order = savedOrder;
+            productOrder.unit_price = information?.price
+            productOrder.name = information?.name
             productOrderRepository?.save(productOrder);
         }
 

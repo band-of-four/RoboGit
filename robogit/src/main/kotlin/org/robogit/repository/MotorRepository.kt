@@ -111,5 +111,5 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    * @return мотор
    */
   @Query("SELECT m FROM Motor m WHERE m.id = :id")
-  fun findMotorById(@Param("id") id: Int) : Motor
+  fun findMotorById(@Param("id") id: Int) : Motor?
 }
