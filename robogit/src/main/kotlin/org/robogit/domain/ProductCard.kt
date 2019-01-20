@@ -24,10 +24,10 @@ class ProductCard {
   @NotNull
   var amount: Int? = null
 
-  @Column
-  @Min(0)
-  @NotNull
-  var unit_price: Float? = null
+//  @Column
+//  @Min(0)
+//  @NotNull
+//  var unit_price: Float? = null
 
   @ManyToOne
   @NotNull
