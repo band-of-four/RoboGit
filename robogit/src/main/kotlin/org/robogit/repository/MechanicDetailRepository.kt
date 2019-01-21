@@ -20,6 +20,7 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
   /**
    * Возвращает все механические детали, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.MechanicDetailSumDto(m, sum(p.amount)as s)  FROM MechanicDetail m, ProductOrder p " +
           "JOIN p.information i " +
@@ -30,12 +31,32 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
    * Возвращает страницу механических деталей, отсортированные по популярности (количеству совершенных покупок)
    * и количество купленных товаров
    * @param pageable - номер страницы
+   * @return лист результатов
    */
   @Query("SELECT new org.robogit.dto.MechanicDetailSumDto(m, sum(p.amount)as s)  FROM MechanicDetail m, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<MechanicDetailSumDto?>?
 
+  /**
+   *  Возвращает механическую деталь по ид
+   *  @param id - ид детали
+   *  @return деталь
+   */
   @Query("SELECT m FROM MechanicDetail m WHERE m.id = :id")
-  fun findMechanicDetailById(@Param("id") id: Int) : MechanicDetail
+  fun findMechanicDetailById(@Param("id") id: Int) : MechanicDetail?
+
+  /**
+   * Применяет фильтры к механическим деталям
+   * @param min_price - минимальная цена
+   * @param max_price - максимальная цена
+   * @return страницу результата
+   */
+  @Query("SELECT m FROM MechanicDetail m JOIN m.information mi WHERE" +
+          "(:min_price IS NULL OR :min_price < mi.price) AND" +
+          "(:max_price IS NULL OR :max_price > mi.price)")
+  fun filter( pagable: Pageable,
+              @Param("min_price") min_price: Float?,
+              @Param("max_price") max_price: Float?) : Page<MechanicDetail>
+
 }

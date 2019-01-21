@@ -113,7 +113,7 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
   @Query("SELECT new org.robogit.dto.ControllerSumDto(c, sum(p.amount)as s)  FROM Controller c, ProductOrder p " +
           "JOIN p.information i " +
           "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
-  fun findPopular(): List<ControllerSumDto?>?
+  fun findPopular(): List<ControllerSumDto?>
 
   /**
    * Возвращает страницу контроллеров, отсортированные по популярности (количеству совершенных покупок)
@@ -125,6 +125,41 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
           "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
   fun findPagePopular(pageable: Pageable): Page<ControllerSumDto?>?
 
+  /**
+   * Возвращает контроллер по ид
+   * @param id - ид контроллера
+   */
   @Query("SELECT c FROM Controller c WHERE c.id = :id")
-  fun findControllerById(@Param("id") id: Int) : Controller
+  fun findControllerById(@Param("id") id: Int) : Controller?
+
+  /**
+   * Применяет фильтры к контроллерам
+   * @param min_price - минимальная цена
+   * @param max_price - максимальная цена
+   * @param min_min_voltage - минимальное мин.значение voltage
+   * @param max_min_voltage - максимальное мин.значение voltage
+   * @param min_max_voltage - минимальное макс.значение voltage
+   * @param max_max_voltage - максимальное макс.значение voltage
+   * @param min_analog_inputs - минимальное кол-во аналоговых входов
+   * @param max_analog_inputs - максимальное кол-во аналоговых входов
+   * @return страницу результата
+   */
+  @Query("SELECT c FROM Controller c JOIN c.information ci WHERE" +
+          "(:min_price IS NULL OR :min_price < ci.price) AND" +
+          "(:max_price IS NULL OR :max_price > ci.price) AND" +
+          "(:min_min_voltage IS NULL OR :min_min_voltage < c.minVoltage) AND" +
+          "(:max_min_voltage IS NULL OR :max_min_voltage > c.minVoltage) AND" +
+          "(:min_max_voltage IS NULL OR :min_max_voltage < c.maxVoltage) AND" +
+          "(:max_max_voltage IS NULL OR :max_max_voltage > c.maxVoltage) AND" +
+          "(:min_analog_inputs IS NULL OR :min_analog_inputs < c.analogInputs) AND" +
+          "(:max_analog_inputs IS NULL OR :max_analog_inputs > c.analogInputs)")
+  fun filter( pagable: Pageable,
+              @Param("min_price") min_price: Float?,
+              @Param("max_price") max_price: Float?,
+              @Param("min_min_voltage") min_min_voltage: Float?,
+              @Param("max_min_voltage") max_min_voltage: Float?,
+              @Param("min_max_voltage") min_max_voltage: Float?,
+              @Param("max_max_voltage") max_max_voltage: Float?,
+              @Param("min_analog_inputs") min_analog_inputs: Int?,
+              @Param("max_analog_inputs") max_analog_inputs: Int?) : Page<Controller>
 }

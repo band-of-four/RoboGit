@@ -1,5 +1,6 @@
 package org.robogit.security
 
+import org.robogit.domain.Role
 import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,7 @@ class OpenAmAuthenticationProvider : AuthenticationProvider {
         if (!userDetailsManager!!.userExists(authentication.getPrincipal() as String)) {
             userDetailsManager!!.createUser(User(authentication.getPrincipal() as String,
                     authentication.getCredentials() as String,
-                    Arrays.asList(SimpleGrantedAuthority("ROLE_USER"))))
+                    Arrays.asList(SimpleGrantedAuthority(Role.AUTHORIZED.toString()))))
         }
         val userDetails = userDetailsManager!!.loadUserByUsername(authentication.getPrincipal() as String)
         val auth = OpenAmAuthenticationToken(authentication.getPrincipal() as String, userDetails.authorities)

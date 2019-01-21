@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.provisioning.UserDetailsManager
 import lombok.extern.slf4j.Slf4j
+import org.robogit.domain.Role
 import org.robogit.domain.User
 import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +21,8 @@ class OpenAmUserDetailsManager : UserDetailsManager {
     override fun createUser(userDetails: UserDetails) {
         val user = User();
         user.login = userDetails.username
-        user.login = userDetails.password
+        user.password = "pswd"
+        user.role = Role.AUTHORIZED
         userRepository?.save(user)
     }
 
@@ -42,8 +44,9 @@ class OpenAmUserDetailsManager : UserDetailsManager {
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(username: String): UserDetails? {
+        println("MANAGER")
         val user = userRepository?.findByLogin(username)
-        val userDetails = OpenAmUserDetails(user?.login, user?.password, Arrays.asList(SimpleGrantedAuthority("ROLE_USER")), user?.id!!)
+        val userDetails = OpenAmUserDetails(user?.login, user?.password, Arrays.asList(SimpleGrantedAuthority(Role.AUTHORIZED.toString())), user?.id!!)
         return userDetails
     }
 }

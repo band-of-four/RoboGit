@@ -17,4 +17,11 @@ interface UserRepository : CrudRepository<User, Int> {
    * @return List with selected users.
    */
   fun findByTelegramId(telegramId: String): List<User>
+
+  /**
+   * Возвращает юзера по email
+   * @param email - email
+   * @return User
+   */
+  fun findByEmail(email: String): User?
 }

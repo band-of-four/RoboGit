@@ -79,7 +79,7 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * @return товар
    */
   @Query("SELECT i FROM Information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES AND i.id = :id")
-  fun findOtherById(@Param("id") id: Int) : Information
+  fun findOtherById(@Param("id") id: Int) : Information?
 
   /**
    * Возвращает все товары типа "прочие ресурсы"
@@ -88,6 +88,24 @@ interface InformationRepository : CrudRepository<Information, Int> {
   @Query("SELECT i FROM Information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES")
   fun findOther() : List<Information>
 
+  /**
+   * Возвращает [Information] по ид
+   * @param id - ид товара
+   */
   @Query("SELECT i FROM Information i WHERE i.id = :id")
-  fun findInformationById(@Param("id") id: Int) : Information
+  fun findInformationById(@Param("id") id: Int) : Information?
+
+  /**
+   * Применяет фильтры к прочим ресурсам
+   * @param min_price - минимальная цена
+   * @param max_price - максимальная цена
+   * @return страницу результата
+   */
+  @Query("SELECT i FROM Information i WHERE " +
+          "i.type = org.robogit.domain.Type.OTHER_RESOURCES AND" +
+          "(:min_price IS NULL OR :min_price < i.price) AND" +
+          "(:max_price IS NULL OR :max_price > i.price)")
+  fun filterForOther( pagable: Pageable,
+              @Param("min_price") min_price: Float?,
+              @Param("max_price") max_price: Float?) : Page<Information>
 }

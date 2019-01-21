@@ -10,9 +10,12 @@ import org.robogit.repository.OrderRepository
 import org.robogit.repository.ProductOrderRepository
 import org.robogit.repository.ProductUserRepository
 import org.robogit.repository.UserRepository
+import org.robogit.security.OpenAmUserDetails
+import org.robogit.utils.MailSender
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.time.Instant
 import java.util.*
@@ -31,28 +34,28 @@ open class OrderController {
     private val productUserRepository: ProductUserRepository? = null
 
     @GetMapping("/order/{id}")
-    fun getOrder(@PathVariable("id") id: Int?): List<OrderDto?>? {
+    fun getOrder(@PathVariable("id") id: Int?, authentication: Authentication): List<OrderDto?>? {
         println("Controller!")
-        val userId = 100
-        println(orderRepository)
+        val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+        val userId = userDetails.userId
         return orderRepository?.getOrderByUserIdAndIdOrder(userId, id)
     }
 
     @GetMapping("/order/sum/{id}")
-    fun getOrderSum(@PathVariable("id") id: Int?): List<OrderSumDto?>? {
+    fun getOrderSum(@PathVariable("id") id: Int?, authentication: Authentication): List<OrderSumDto?>? {
         println("Controller!")
-        val userId = 100
-//        val result = orderRepository?.getOrderSumByUserIdAndIdOrder(userId, id)
+        val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+        val userId = userDetails.userId
         val result2 = orderRepository?.getOrderSumByIdOrder(id)
-//        println(result)
         println(result2)
         return orderRepository?.getOrderSumByUserIdAndIdOrder(userId,id)
     }
 
     @PostMapping("/order/create")
-    fun createOrder(@RequestBody card: List<CardElementDto>): ResponseEntity<HttpStatus> {
+    fun createOrder(@RequestBody card: List<CardElementDto>, authentication: Authentication): ResponseEntity<HttpStatus> {
         println("Controller!")
-        val userId = 100
+        val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+        val userId = userDetails.userId
         val order = Order()
         order.date = Date.from(Instant.now())
         val userOpt = userRepository?.findById(userId)
@@ -65,14 +68,16 @@ open class OrderController {
         for (item in card) {
             val byUserIdAndId = productUserRepository?.findByUserIdAndId(userOpt.get().id!!, item.productUserId)
             val productOrder = ProductOrder()
+            val information = byUserIdAndId?.information
             productOrder.amount = byUserIdAndId?.amount
-            productOrder.information = byUserIdAndId?.information
+            productOrder.information = information
             productOrder.order = savedOrder;
-            productOrderRepository?.save(productOrder);
+            productOrder.unit_price = information?.price
+            productOrder.name = information?.name
+            productOrderRepository?.save(productOrder)
         }
-
-        order.productOrders
+        val mail = MailSender()
+        if (order.user?.email!!.isNotEmpty()) mail.sendMail(order.user?.email!!, "Заказ №" + order.id, mail.createOrderMessage(card))
         return ResponseEntity(HttpStatus.CREATED)
     }
-
 }

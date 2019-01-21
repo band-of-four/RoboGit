@@ -35,7 +35,6 @@ class ProductCard {
   var card: Card? = null
 
   @ManyToOne
-  @NotNull
   @JoinColumn(name = "id_product")
   var information: Information? = null
 }

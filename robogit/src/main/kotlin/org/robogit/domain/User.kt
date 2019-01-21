@@ -30,6 +30,9 @@ class User {
     var password: String? = null
 
     @Column
+    var email: String? = null
+
+    @Column
     var telegramId: String? = null
 
     @OneToMany(mappedBy = "user")

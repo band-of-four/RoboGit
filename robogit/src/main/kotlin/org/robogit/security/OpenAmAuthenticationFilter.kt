@@ -1,5 +1,6 @@
 package org.robogit.security
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -27,6 +28,7 @@ class OpenAmAuthenticationFilter internal constructor() : AbstractAuthentication
 
     @Throws(AuthenticationException::class, IOException::class, ServletException::class)
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication? {
+        println("LOGIN FILTER")
         val iPlanetDirectoryPro = Arrays.stream<Cookie>(request.cookies)
                 .filter { c -> c.getName() == "iPlanetDirectoryPro" }.findFirst()
 
@@ -56,8 +58,11 @@ class OpenAmAuthenticationFilter internal constructor() : AbstractAuthentication
             }
 
             if (attributesResponse != null && attributesResponse.hasBody()) {
+                println(attributesResponse.statusCode)
+                println(attributesResponse.body!!.attributes)
                 val username = Arrays.stream(attributesResponse.body!!.attributes!!)
-                        .filter { a -> a.name == "uid" }
+                        .filter { a -> println(a)
+                            a.name == "uid" }
                         .findFirst()
                         .map<Array<String>>({it.values })
                         .map<String> { v -> v[0] }
@@ -83,19 +88,10 @@ class OpenAmAuthenticationFilter internal constructor() : AbstractAuthentication
 
     class OpenAmAttributeResponse {
         var attributes: Array<OpenAmAttribute>? = null
-            set(attributes) {
-                field = this.attributes
-            }
     }
 
     class OpenAmAttribute {
         var name: String? = null
-            set(name) {
-                field = this.name
-            }
         var values: Array<String>? = null
-            set(values) {
-                field = this.values
-            }
     }
 }

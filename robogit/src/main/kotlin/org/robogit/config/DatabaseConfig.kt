@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @EnableTransactionManagement
 open class DatabaseConfig {
   companion object {
-    // const val SCHEMA_NAME = "s244707" // Marina's config
-    const val SCHEMA_NAME = "public" // docker config
+     const val SCHEMA_NAME = "s244707" // Marina's config
+//    const val SCHEMA_NAME = "public" // docker config
   }
 
 }
