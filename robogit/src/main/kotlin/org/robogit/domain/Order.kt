@@ -33,6 +33,9 @@ class Order {
   @NotBlank
   var address: String? = null
 
+  @Column
+  var isPaid: Boolean? = null
+
   @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "id_user")
