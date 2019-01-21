@@ -10,14 +10,17 @@ import org.robogit.repository.CardRepository
 import org.robogit.repository.InformationRepository
 import org.robogit.repository.ProductUserRepository
 import org.robogit.repository.UserRepository
+import org.robogit.security.OpenAmUserDetails
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/card")
-@Slf4j
+@RequestMapping("/api")
 class CardController {
   @Autowired
   private val productUserRepository: ProductUserRepository? = null
@@ -31,64 +34,54 @@ class CardController {
   @Autowired
   private val userRepository: UserRepository? = null
 
-  @GetMapping("/get")
-  fun getCard(): List<CardElementDto>? {
-    println("get card!")
-    //User user = SecurityContextHolder.getCurrentInstance.
-    val userId = 100
-    return productUserRepository?.findAllByUserId(userId)
+  @GetMapping("/card/get")
+  fun getCard(authentication: Authentication): List<CardElementDto>? {
+      println("get card!")
+      val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+      println(userDetails.userId)
+      return productUserRepository?.findAllByUserId(userDetails.userId)
   }
 
-//    @GetMapping("/get")
-//    fun getCard(authentication: Authentication): List<CardElementDto>? {
-//        println("get card!")
-//        val userDetails = (OpenAmUserDetails) authentication.details
-//        return productUserRepository?.findAllByUserId(userDetails.userId)
-//    }
-
-  @PostMapping("/add")
-  fun addToCard(@RequestParam partId: Int, @RequestParam amount: Int): ResponseEntity<HttpStatus> {
+  @PostMapping("/card/add")
+  fun addToCard(@RequestParam partId: Int, @RequestParam amount: Int, authentication: Authentication)
+          : ResponseEntity<HttpStatus> {
     println("Controller!")
-    //User user = SecurityContextHolder.getCurrentInstance.
-//        val userId = 100;
-//        User user
-//        val information = informationRepository?.findById(partId)?.get()
-//        val productUser = ProductUser()
-//        productUser.information = information
-//        productUser.amount = amount
-//        productUser.user = user
-//        productUserRepository?.save(productUser)
-    return ResponseEntity<HttpStatus>(HttpStatus.CREATED)
+    val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+    val information = informationRepository?.findById(partId)?.get()
+    val productUser = ProductUser()
+    productUser.information = information
+    productUser.amount = amount
+    productUser.user = userRepository?.findById(userDetails.userId)?.get()
+    productUserRepository?.save(productUser)
+    return ResponseEntity(HttpStatus.CREATED)
   }
 
-  @PostMapping("/remove")
-  fun removeFromCard(@RequestParam productUserId: Int): ResponseEntity<HttpStatus> {
+  @PostMapping("/card/remove")
+  fun removeFromCard(@RequestParam productUserId: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
     println("Controller!")
-    //User user = SecurityContextHolder.getCurrentInstance.
-    val userId = 100
-    val byUserIdAndId = productUserRepository?.findByUserIdAndId(userId, productUserId)
+    val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+    val byUserIdAndId = productUserRepository?.findByUserIdAndId(userDetails.userId, productUserId)
     productUserRepository?.delete(byUserIdAndId!!)
-    return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    return ResponseEntity(HttpStatus.OK)
   }
 
-  @PostMapping("/amount/set")
-  fun setAmount(@RequestParam productUserId: Int, @RequestParam amount: Int): ResponseEntity<HttpStatus> {
+  @PostMapping("/card/amount/set")
+  fun setAmount(@RequestParam productUserId: Int, @RequestParam amount: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
     println("Controller!")
-    //User user = SecurityContextHolder.getCurrentInstance.
-    val userId = 100
-    val byUserIdAndId = productUserRepository?.findByUserIdAndId(userId, productUserId)
+    val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+    val byUserIdAndId = productUserRepository?.findByUserIdAndId(userDetails.userId, productUserId)
     if (amount < 0) {
       return ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST)
     }
     byUserIdAndId?.amount = amount
     productUserRepository?.save(byUserIdAndId!!)
-    return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    return ResponseEntity(HttpStatus.OK)
   }
 
-  @PostMapping("/share")
-  fun shareCard(): Int? {
-    // User user = SecurityContextHolder.getCurrentInstance.
-    val user = User().apply { id = 100 } // FIXME
+  @PostMapping("/card/share")
+  fun shareCard(authentication: Authentication): Int? {
+    val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+    val user = User().apply { id = userDetails.userId }
     val products = productUserRepository?.findAllByUserId(user.id
         ?: throw IllegalArgumentException("Not authorized user ${user.login}")) // FIXME maybe should return null
     val cardToSave = Card().apply { this.user = user }
@@ -103,7 +96,7 @@ class CardController {
     return savedCard?.id
   }
 
-  @PostMapping("/getShared")
+  @PostMapping("/card/getShared")
   fun getSharedCard(@RequestParam sharedId: Int): Card? {
     val card = cardRepository?.findById(sharedId)
     return if (card?.isPresent!!) {
@@ -113,13 +106,13 @@ class CardController {
     }
   }
 
-  @PostMapping("/copyShared")
-  fun copySharedCardToLocal(@RequestParam sharedId: Int): ResponseEntity<HttpStatus> {
-    // User user = SecurityContextHolder.getCurrentInstance.
-    val user = User().apply { id = 100 } // FIXME
+  @PostMapping("/card/copyShared")
+  fun copySharedCardToLocal(@RequestParam sharedId: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+    val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+    val user = User().apply { id = userDetails.userId  } // FIXME
     val sharedCard = getSharedCard(sharedId)
         ?: throw IllegalArgumentException("Shared card with id: $sharedId not found") // FIXME maybe should return bad http status
-    cleanLocalCard()
+    cleanLocalCard(authentication)
     sharedCard.productCards.forEach {
       (user.products as MutableSet<ProductUser>).add(ProductUser().apply {
         this.user = user
@@ -131,10 +124,10 @@ class CardController {
     return ResponseEntity(HttpStatus.OK)
   }
 
-  @PostMapping("/clean")
-  fun cleanLocalCard(): ResponseEntity<HttpStatus> {
-    // User user = SecurityContextHolder.getCurrentInstance.
-    val user = User().apply { id = 100 } // FIXME
+  @PostMapping("/card/clean")
+  fun cleanLocalCard(authentication: Authentication): ResponseEntity<HttpStatus> {
+    val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
+    val user = User().apply { id = userDetails.userId } // FIXME
     (user.products as MutableSet<ProductUser>).clear()
     userRepository?.save(user)
     return ResponseEntity(HttpStatus.OK)
