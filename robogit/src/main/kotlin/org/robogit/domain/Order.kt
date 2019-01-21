@@ -30,8 +30,15 @@ class Order {
   var date: Date? = null
 
   @Column
+  @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+  var deliveryDate: Date? = null
+
+  @Column
   @NotBlank
   var address: String? = null
+
+  @Column
+  var isPaid: Boolean? = null
 
   @JsonBackReference
   @ManyToOne

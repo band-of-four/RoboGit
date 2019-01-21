@@ -92,7 +92,7 @@ interface OrderRepository : CrudRepository<Order, Int> {
           "(i.name as name, p.amount as amount, p.unit_price as price, (p.amount*p.unit_price) as sum) " +
           "FROM ProductOrder p JOIN Information i ON (p.information.id = i.id)" +
           "WHERE p.order.id = ?#{[0]}")
-  fun getOrderByIdOrder( idOrder: Int?): List<OrderDto?>?
+  fun getOrderByIdOrder(idOrder: Int?): List<OrderDto?>?
 
 
   /**
