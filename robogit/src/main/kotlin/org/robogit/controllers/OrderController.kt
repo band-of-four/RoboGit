@@ -38,7 +38,6 @@ open class OrderController {
         println("Controller!")
         val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
         val userId = userDetails.userId
-        println(orderRepository)
         return orderRepository?.getOrderByUserIdAndIdOrder(userId, id)
     }
 
@@ -76,13 +75,9 @@ open class OrderController {
             productOrder.unit_price = information?.price
             productOrder.name = information?.name
             productOrderRepository?.save(productOrder)
-
-            val mail = MailSender()
-//            mail.sendMail(order.user?.email!!,
         }
-
-        order.productOrders
+        val mail = MailSender()
+        if (order.user?.email!!.isNotEmpty()) mail.sendMail(order.user?.email!!, "Заказ №" + order.id, mail.createOrderMessage(card))
         return ResponseEntity(HttpStatus.CREATED)
     }
-
 }
