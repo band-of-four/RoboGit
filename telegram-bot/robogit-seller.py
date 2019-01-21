@@ -54,6 +54,24 @@ def send_payment(message):
                                       f"message=RoboGit%20order%20{order_id}")
 
 
+@bot.message_handler(commands=['setAddress'])
+def set_address(message):
+    order_id = str(message.text).split()[1]
+    tele_id = "12324141"  # FIXME
+    address = str(message.text).split(' ', 2)[2]
+    print(address)
+    print(str(json.dumps({"orderId": int(order_id), "telegramId": tele_id, "address": address})))
+    r = requests.post(BASE_HOST + "/setDestination",
+                      json=json.dumps({"orderId": int(order_id), "telegramId": tele_id, "address": address}))
+    print(r.request)
+    print(r.status_code)
+    print(r.content)
+    if r.status_code == 200:
+        bot.send_message(message.chat.id, f"Destination address for order {order_id} set")
+    else:
+        bot.send_message(message.chat.id, f"Your order with id: {order_id} was not found")
+
+
 if __name__ == '__main__':
     print("Bot has been started!")
     bot.polling(none_stop=True)

@@ -30,6 +30,10 @@ class Order {
   var date: Date? = null
 
   @Column
+  @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+  var deliveryDate: Date? = null
+
+  @Column
   @NotBlank
   var address: String? = null
 
