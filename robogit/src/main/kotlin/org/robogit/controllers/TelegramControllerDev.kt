@@ -28,6 +28,9 @@ class TelegramControllerDev {
   @Autowired
   private val orderRepository: OrderRepository? = null
 
+  @Autowired
+  private val productOrderRepository: ProductOrderRepository? = null
+
   @GetMapping("/addOrder")
   fun addOneOrder() {
     if (motorRepository == null) println("Run away! DI does not work!")
@@ -70,13 +73,16 @@ class TelegramControllerDev {
       date = Date()
       this.user = user
     }
-    (order.productOrders as MutableSet<ProductOrder>).add(ProductOrder().apply {
+    orderRepository?.save(order)
+
+    val productOrder = ProductOrder().apply {
       this.amount = 2
       this.information = motor.information
       this.order = order
       this.unit_price = motor.information?.price
-    })
-    orderRepository?.save(order)
+    }
+    productOrderRepository?.save(productOrder)
+
   }
 
 }

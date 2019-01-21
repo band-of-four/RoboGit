@@ -3,6 +3,7 @@ package org.robogit.controllers
 import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Order
 import org.robogit.dto.OrderDto
+import org.robogit.dto.OrderSumDto
 import org.robogit.repository.OrderRepository
 import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,10 +24,16 @@ class TelebotController {
   private var userRepository: UserRepository? = null
 
   @GetMapping("/getOrder/{telegramId}/{orderId}")
-  fun getOrder(@PathVariable("telegramId") telegramId: String, @PathVariable("orderId") orderId: Int): Order? {
+  fun getOrder(@PathVariable("telegramId") telegramId: String,
+               @PathVariable("orderId") orderId: Int): Order? {
     val order = orderRepository?.findById(orderId)?.get() ?: return null
     val teleUser = userRepository?.findByTelegramId(telegramId)?.find { it.telegramId == telegramId }
     return if (!order.isPaid!! && order.user?.id == teleUser?.id) order else null
+  }
+
+  @GetMapping("/getFullPrice/{orderId}")
+  fun getOrderContent(@PathVariable("orderId") orderId: Int): List<OrderSumDto?>? {
+    return orderRepository?.getOrderSumByIdOrder(orderId) ?: return null
   }
 
 }
