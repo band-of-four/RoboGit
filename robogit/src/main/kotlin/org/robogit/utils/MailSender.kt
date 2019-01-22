@@ -8,7 +8,7 @@ import java.util.Properties
 
 internal class MailSender {
     val username = "bandoffourmail@gmail.com"
-    val password = PASSWORD
+    val password = "PASSWORD"
 
     fun sendMail(to: String, subject: String, body: String): Boolean {
         val props = Properties()
@@ -52,7 +52,7 @@ internal class MailSender {
             res += "Цена за единицу: " + item.information.price + "\n\n"
             sum += item.amount * item.information.price!!
         }
-        res += "\nИтог: " + sum
+        res += "\nИтог: $sum"
         return res
     }
 

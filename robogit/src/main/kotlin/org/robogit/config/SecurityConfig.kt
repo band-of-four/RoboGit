@@ -33,6 +33,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
   @Autowired
   private val logoutSuccessHandler: LogoutSuccessHandler? = null
 
+  // TODO add redirects
   @Throws(Exception::class)
   override fun configure(http: HttpSecurity) {
     http.csrf().disable()
@@ -47,7 +48,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
         .and().logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler)
   }
 
-  @Bean(name = arrayOf(BeanIds.AUTHENTICATION_MANAGER))
+  @Bean(name = [BeanIds.AUTHENTICATION_MANAGER])
   @Throws(Exception::class)
   override fun authenticationManagerBean(): AuthenticationManager {
     return super.authenticationManagerBean()
