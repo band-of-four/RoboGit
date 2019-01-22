@@ -1,18 +1,14 @@
-import ast
 import telebot
 import requests
 import json
+
+BASE_HOST = "http://robogit.org:8080/api/telebot"
 
 f = open(".teletoken", "r")
 token = f.read().rstrip()
 f.close()
 
 bot = telebot.TeleBot(token)
-
-
-# @bot.message_handler(content_types=['text'])
-# def main_controller(message):
-#     send_help(message)
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -25,14 +21,17 @@ def send_help(message):
     bot.send_message(message.chat.id, resp)
 
 
-BASE_HOST = "http://robogit.org:8080/api/telebot"
-
-
 @bot.message_handler(commands=['pay'])
 def send_payment(message):
-    # r = requests.get(BASE_HOST + f"/getOrder/{message.chat.id}/{message}")  # FIXME
+    if len(str(message.text).split()) < 2:
+        bot.send_message(message.chat.id, "You should send command in the format:\n"
+                                          "/pay [order_id], for example:\n"
+                                          "/pay 1001\n"
+                                          "Please, try again")
+        return
     order_id = str(message.text).split()[1]
-    tele_id = "12324141"  # FIXME
+    tele_id = str(message.chat.id)
+    print(tele_id)
     r = requests.get(BASE_HOST + f"/getOrder/{tele_id}/{order_id}")
     print(BASE_HOST + f"/getOrder/{tele_id}/{order_id}")
     response_json = r.content.decode("UTF-8")
@@ -50,22 +49,17 @@ def send_payment(message):
     bot.send_message(message.chat.id, "Click the link below to pay:\n"
                                       "https://www.blockchain.com/btc/payment_request?"
                                       "address=12droSfCah25BG22KR6pNPVf612DXD8CZH&"
-                                      f"amount={str(response_obj[0]['sum'])}&"
+                                      f"amount={round(float(str(response_obj[0]['sum'])), 7)}&"
                                       f"message=RoboGit%20order%20{order_id}")
 
 
 @bot.message_handler(commands=['setAddress'])
 def set_address(message):
     order_id = str(message.text).split()[1]
-    tele_id = "12324141"  # FIXME
+    tele_id = str(message.chat.id)
     address = str(message.text).split(' ', 2)[2]
-    print(address)
-    print(str(json.dumps({"orderId": int(order_id), "telegramId": tele_id, "address": address})))
     r = requests.post(BASE_HOST + "/setDestination",
-                      json=json.dumps({"orderId": int(order_id), "telegramId": tele_id, "address": address}))
-    print(r.request)
-    print(r.status_code)
-    print(r.content)
+                      json={"orderId": int(order_id), "telegramId": tele_id, "address": address})
     if r.status_code == 200:
         bot.send_message(message.chat.id, f"Destination address for order {order_id} set")
     else:

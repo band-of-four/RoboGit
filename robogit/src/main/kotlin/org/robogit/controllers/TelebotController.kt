@@ -72,6 +72,6 @@ class TelebotController {
 
 }
 
-data class DestinationDto(var orderId: Int? = null, var telegramId: String? = null, var address: String? = null) : Serializable
+data class DestinationDto(var orderId: Int? = null, var telegramId: String? = null, var address: String? = null)
 
-data class DeliveryDateDto(var orderId: Int? = null, var telegramId: String? = null, var date: Date? = null) : Serializable
+data class DeliveryDateDto(var orderId: Int? = null, var telegramId: String? = null, var date: Date? = null)
