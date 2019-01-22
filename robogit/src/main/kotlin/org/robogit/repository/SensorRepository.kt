@@ -100,7 +100,6 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
    * @param max_max_voltage - максимальное макс.значение voltage
    * @return страницу результата
    */
-  //FIXME я возвращаю что-то не то
   @Query("SELECT s FROM Sensor s JOIN s.information si WHERE " +
           "si.type = org.robogit.domain.Type.SENSOR AND" +
           "(:min_price IS NULL OR :min_price < si.price) AND" +

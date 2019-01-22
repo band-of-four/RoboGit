@@ -1,16 +1,21 @@
 import React, {Component} from 'react'
 
+
+
 class Products extends Component {
     constructor(props) {
         super(props);
         this.state = {products: []};
     }
     componentDidMount () {
+        console.log("request");
+        var reactThis = this;
         $.ajax({
-            url: "http://localhost:8080/api/information/1"
+            url: "http://robogit.org:8080/api/information"
         }).then(function (data) {
             console.log("data = " + data);
-            this.setState({products: data});
+            reactThis.setState({products: data});
+            console.log("data = " + this.state);
         });
     }
     render() {

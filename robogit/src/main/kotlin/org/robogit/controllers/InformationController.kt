@@ -24,7 +24,7 @@ class InformationController {
 
     @GetMapping("/information/{page}")
     fun getInformationByPage(@PathVariable("page") numPage: Int): List<InformationSumDto?>? {
-        println("Controller!")
+        println("getInformationByPage")
         val page = PageRequest.of(numPage, 50)
         return informationRepository?.findPagePopular(page)?.content
     }

@@ -13,6 +13,9 @@ module.exports = {
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   devServer: {
+    port: 8081,
+    host: 'robogit.org',
+    disableHostCheck: true,
     contentBase: path.join(__dirname,'src')
   },
   module: {
