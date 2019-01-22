@@ -1,5 +1,6 @@
 package org.robogit.controllers
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Order
 import org.robogit.dto.OrderDto
@@ -39,11 +40,12 @@ class TelebotController {
 
   @PostMapping("/setDestination")
   fun setDestination(@RequestBody destinationDto: DestinationDto): ResponseEntity<HttpStatus> {
-    val order = orderRepository?.findById(destinationDto.orderId!!)?.get()
+    val optionalOrder = orderRepository?.findById(destinationDto.orderId!!)
+    val order = if (optionalOrder?.isPresent!!) optionalOrder.get() else return ResponseEntity(HttpStatus.BAD_REQUEST)
+    val teleUser = (userRepository?.findByTelegramId(destinationDto.telegramId!!)
+        ?.find { it.telegramId == destinationDto.telegramId })
         ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
-    val teleUser = userRepository?.findByTelegramId(destinationDto.telegramId!!)
-        ?.find { it.telegramId == destinationDto.telegramId }
-    return if (order.user?.id == teleUser?.id) {
+    return if (order.user?.id == teleUser.id) {
       order.address = destinationDto.address
       orderRepository?.save(order)
       ResponseEntity(HttpStatus.OK)
@@ -52,16 +54,16 @@ class TelebotController {
     }
   }
 
-  @GetMapping("/getSimpleDestinationDto")
-  fun getSimpleDestinationDto() = DestinationDto(2, "1463345", "V9zma sample")
-
   @PostMapping("/setDeliveryDate")
   fun setDeliveryDate(@RequestBody deliveryDateDto: DeliveryDateDto): String {
-    val order = orderRepository?.findById(deliveryDateDto.orderId!!)?.get()
-        ?: return "Order with id=${deliveryDateDto.orderId} was not found"
-    val teleUser = userRepository?.findByTelegramId(deliveryDateDto.telegramId!!)
-        ?.find { it.telegramId == deliveryDateDto.telegramId }
-    return if (order.user?.id == teleUser?.id) {
+    val optionalOrder = orderRepository?.findById(deliveryDateDto.orderId!!)
+    val order = if (optionalOrder?.isPresent!!) optionalOrder.get()
+    else return "Order with id=${deliveryDateDto.orderId} was not found"
+
+    val teleUser = (userRepository?.findByTelegramId(deliveryDateDto.telegramId!!)
+        ?.find { it.telegramId == deliveryDateDto.telegramId })
+        ?: return "Your order with id=${deliveryDateDto.orderId} was not found"
+    return if (order.user?.id == teleUser.id) {
       order.deliveryDate = deliveryDateDto.date
       orderRepository?.save(order)
       "Delivery time set"
@@ -74,4 +76,5 @@ class TelebotController {
 
 data class DestinationDto(var orderId: Int? = null, var telegramId: String? = null, var address: String? = null)
 
-data class DeliveryDateDto(var orderId: Int? = null, var telegramId: String? = null, var date: Date? = null)
+data class DeliveryDateDto(var orderId: Int? = null, var telegramId: String? = null,
+                           @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy") var date: Date? = null)
