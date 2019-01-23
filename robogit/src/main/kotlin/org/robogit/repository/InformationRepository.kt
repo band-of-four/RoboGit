@@ -62,7 +62,7 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * и количество купленных товаров
    * @return лист результатов
    */
-  @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductOrder p JOIN p.information i GROUP BY i.id ORDER BY s desc")
+  @Query("SELECT  new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s)  FROM ProductOrder p RIGHT JOIN p.information i GROUP BY i.id ORDER BY s desc")
   fun findPopular(): List<InformationSumDto?>?
 
   /**
@@ -70,7 +70,7 @@ interface InformationRepository : CrudRepository<Information, Int> {
    * @param pageable pageable - номер страницы
    * @return лист результатов
    */
-  @Query("SELECT new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s) FROM ProductOrder p JOIN p.information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES GROUP BY i.id ORDER BY s desc")
+  @Query("SELECT new org.robogit.dto.InformationSumDto(i, sum(p.amount)as s) FROM ProductOrder p RIGHT JOIN p.information i WHERE i.type = org.robogit.domain.Type.OTHER_RESOURCES GROUP BY i.id ORDER BY s desc")
   fun findPopularOther(pageable:Pageable): Page<InformationSumDto>
 
   /**
