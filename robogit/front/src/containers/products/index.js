@@ -10,13 +10,7 @@ class Products extends Component {
     componentDidMount () {
         console.log("request");
         var reactThis = this;
-        $.ajax({
-            url: "http://robogit.org:8080/api/information"
-        }).then(function (data) {
-            console.log("data = " + data);
-            reactThis.setState({products: data});
-            console.log("data = " + this.state);
-        });
+
     }
     render() {
         return (
