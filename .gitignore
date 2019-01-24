@@ -11,6 +11,6 @@ build/
 gradle/
 
 
-
-robogit/front/node_modules/
+node_modules/
 .teletoken
+

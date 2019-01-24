@@ -15,10 +15,10 @@ import Basket from 'containers/basket'
 
 const store = createStore(reducers, composeWithDevTools(
   applyMiddleware(thunk)
-))
+));
 
-const history = syncHistoryWithStore(browserHistory, store)
-console.log("!")
+const history = syncHistoryWithStore(browserHistory, store);
+console.log("!");
 
 ReactDOM.render(
   <Provider store={store}>
