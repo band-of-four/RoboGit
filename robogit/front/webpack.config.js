@@ -3,9 +3,9 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 module.exports = {
-  entry: path.join(__dirname,'src','index.js'),
+  entry: path.join(__dirname, 'src', 'index.js'),
   output: {
-    path: path.join(__dirname,'build'),
+    path: path.join(__dirname, 'build'),
     filename: 'index.bundle.js'
   },
   mode: process.env.NODE_ENV || 'development',
@@ -13,7 +13,7 @@ module.exports = {
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   devServer: {
-    contentBase: path.join(__dirname,'src')
+    contentBase: path.join(__dirname, 'src')
   },
   module: {
     rules: [
@@ -29,8 +29,8 @@ module.exports = {
         test: /\.(css|scss)$/,
         use: [
           "style-loader", // creates style nodes from JS strings
-          "css-loader", // translates CSS into CommonJS
-          "sass-loader" // compiles Sass to CSS, using Node Sass by default
+          "css-loader",   // translates CSS into CommonJS
+          "sass-loader"   // compiles Sass to CSS, using Node Sass by default
         ]
       },
       {
@@ -41,7 +41,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname,'src','index.html')
+      template: path.join(__dirname, 'src', 'index.html')
     })
   ]
 };

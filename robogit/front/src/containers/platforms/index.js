@@ -1,9 +1,9 @@
 import React from 'react'
 
 const Platforms = () => (
-    <div>
-        Platforms
-    </div>
+  <div>
+    Platforms
+  </div>
 );
 
 export default Platforms
