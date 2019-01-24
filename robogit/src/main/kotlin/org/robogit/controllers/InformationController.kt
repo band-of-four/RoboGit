@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.servlet.http.HttpServletResponse
+import org.springframework.web.bind.annotation.ModelAttribute
+
 
 @RestController
 @RequestMapping("/api")
@@ -16,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController
 class InformationController {
     @Autowired
     private val informationRepository: InformationRepository? = null
+
+    @ModelAttribute
+    fun setResponseHeaders(response: HttpServletResponse) {
+        response.setHeader("Access-Control-Allow-Origin", "*")
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+    }
 
     @GetMapping("/information")
     fun getInformation(): List<InformationSumDto?>? {
