@@ -112,7 +112,7 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
    */
   @Query("SELECT new org.robogit.dto.ControllerSumDto(c, sum(p.amount)as s)  FROM Controller c, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
+          "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc nulls last")
   fun findPopular(): List<ControllerSumDto?>
 
   /**
@@ -122,7 +122,7 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
    */
   @Query("SELECT new org.robogit.dto.ControllerSumDto(c, sum(p.amount)as s) FROM Controller c, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc")
+          "JOIN c.information i2 WHERE i.id=i2.id GROUP BY c.id ORDER BY s desc nulls last")
   fun findPagePopular(pageable: Pageable): Page<ControllerSumDto?>?
 
   /**

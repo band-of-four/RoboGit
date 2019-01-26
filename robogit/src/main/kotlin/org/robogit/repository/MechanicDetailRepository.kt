@@ -24,7 +24,7 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
    */
   @Query("SELECT new org.robogit.dto.MechanicDetailSumDto(m, sum(p.amount)as s)  FROM MechanicDetail m, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc nulls last")
   fun findPopular(): List<MechanicDetailSumDto?>?
 
   /**
@@ -35,7 +35,7 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
    */
   @Query("SELECT new org.robogit.dto.MechanicDetailSumDto(m, sum(p.amount)as s)  FROM MechanicDetail m, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc nulls last")
   fun findPagePopular(pageable: Pageable): Page<MechanicDetailSumDto?>?
 
   /**

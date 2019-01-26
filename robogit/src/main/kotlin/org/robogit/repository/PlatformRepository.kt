@@ -159,7 +159,7 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
    */
   @Query("SELECT new org.robogit.dto.PlatformSumDto(pl, sum(p.amount)as s)  FROM Platform pl, ProductUser p " +
           "JOIN p.information i " +
-          "JOIN pl.information i2 WHERE i.id=i2.id GROUP BY pl.id ORDER BY s desc")
+          "JOIN pl.information i2 WHERE i.id=i2.id GROUP BY pl.id ORDER BY s desc nulls last")
   fun findPopular(): List<PlatformSumDto?>?
 
   /**
@@ -170,7 +170,7 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
    */
   @Query("SELECT new org.robogit.dto.PlatformSumDto(m, sum(p.amount)as s)  FROM Platform m, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc nulls last")
   fun findPagePopular(pageable: Pageable): Page<PlatformSumDto?>?
 
   /**

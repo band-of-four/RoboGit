@@ -91,7 +91,7 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    */
   @Query("SELECT new org.robogit.dto.MotorSumDto(m, sum(p.amount)as s)  FROM Motor m, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc nulls last")
   fun findPopular(): List<MotorSumDto?>?
 
   /**
@@ -102,7 +102,7 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    */
   @Query("SELECT new org.robogit.dto.MotorSumDto(m, sum(p.amount)as s)  FROM Motor m, ProductOrder p " +
           "JOIN p.information i " +
-          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc")
+          "JOIN m.information i2 WHERE i.id=i2.id GROUP BY m.id ORDER BY s desc nulls last")
   fun findPagePopular(pageable: Pageable): Page<MotorSumDto?>?
 
   /**
