@@ -19,6 +19,7 @@ import javax.validation.constraints.NotBlank
  * provider - производитель
  * description - описание продукта
  * amount - общее количество товаров
+ * image - путь к изображению товара
  */
 @Entity
 @Table(name = "information", schema = DatabaseConfig.SCHEMA_NAME)
@@ -40,6 +41,9 @@ class Information : Serializable {
   @Column
   @NotBlank
   var name: String? = null
+
+  @Column
+  var image: String? = null
 
   @Column
   @Min(0)

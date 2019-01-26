@@ -12,36 +12,60 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletResponse
 import org.springframework.web.bind.annotation.ModelAttribute
+import java.nio.file.Files
+import java.nio.file.Paths
+import javax.servlet.ServletContext
 
 
 @RestController
 @RequestMapping("/api")
 @Slf4j
 class InformationController {
-    @Autowired
-    private val informationRepository: InformationRepository? = null
+  @Autowired
+  private val informationRepository: InformationRepository? = null
 
-    @ModelAttribute
-    fun setResponseHeaders(response: HttpServletResponse) {
-        response.setHeader("Access-Control-Allow-Origin", "*")
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-    }
+//  @Autowired
+//  private val storageService: StorageService? = null
 
-    @GetMapping("/information")
-    fun getInformation(): List<InformationSumDto?>? {
-        println("Controller!")
-        return informationRepository?.findPopular()    }
+  @ModelAttribute
+  fun setResponseHeaders(response: HttpServletResponse) {
+    response.setHeader("Access-Control-Allow-Origin", "*")
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+  }
 
-    @GetMapping("/information/{page}")
-    fun getInformationByPage(@PathVariable("page") numPage: Int): List<InformationSumDto?>? {
-        println("getInformationByPage")
-        val page = PageRequest.of(numPage, 50)
-        return informationRepository?.findPagePopular(page)?.content
-    }
+  @GetMapping("/information")
+  fun getInformation(): List<InformationSumDto?>? {
+    println("Controller!")
+    return informationRepository?.findPopular()
+  }
 
-    @GetMapping("/information/by_id/{id}")
-    fun getInformationById(@PathVariable("id") id: Int): Information? {
-        println("getInformationByPage")
-        return informationRepository?.findById(id)?.get()
-    }
+  @GetMapping("/information/{page}")
+  fun getInformationByPage(@PathVariable("page") numPage: Int): List<InformationSumDto?>? {
+    println("getInformationByPage")
+    val page = PageRequest.of(numPage, 50)
+    return informationRepository?.findPagePopular(page)?.content
+  }
+
+  @GetMapping("/information/by_id/{id}")
+  fun getInformationById(@PathVariable("id") id: Int): Information? {
+    println("getInformationByPage")
+    return informationRepository?.findById(id)?.get()
+  }
+
+  @GetMapping("/information/image/{id}")
+  fun getImage(@PathVariable id: Int, ctx: ServletContext): ByteArray {
+    println("getImage called")
+    var rpath = ctx.getRealPath("/external/")
+    rpath = "$rpath/$id"
+    val path = Paths.get(rpath)
+    return Files.readAllBytes(path)
+  }
+
+//  @PostMapping("/")
+//  fun handleFileUpload(@RequestParam("file") file: MultipartFile,
+//                       redirectAttributes: RedirectAttributes): String {
+//
+//    storageService?.store(file)
+//    return "OK"
+//  }
 }

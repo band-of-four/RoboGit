@@ -6,6 +6,4 @@ import java.util.*
 class ControllerDto (val model: String, val name: String, val price: Float,
                      val provider: String, val description: String, val amount: Int, var ram: Int,
                      val min_voltage: Float, val max_voltage: Float, val analog_inputs: Int,
-                     val interface_: Interface){
-
-}
+                     val interface_: Interface)
