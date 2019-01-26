@@ -26,6 +26,15 @@ interface ProductUserRepository: CrudRepository<ProductUser, Int> {
   fun findByUserIdAndId(@Param("userId") userId:Int, @Param("id") id:Int) : ProductUser?
 
   /**
+   * Находит все товары определенного ид в корзине по ид товара и ид юзера
+   * @param userId - ид юзера
+   * @param id - ид товара
+   * @return
+   */
+  @Query("SELECT pu FROM ProductUser pu JOIN pu.user puu WHERE puu.id = :userId AND pu.information.id = :productId")
+  fun findByUserIdAndProductId(@Param("userId") userId:Int, @Param("productId") productId:Int) : ProductUser?
+
+  /**
    * Возвращает все товары в корзине юзера по ид
    * @param userId - ид юзера
    * @return Лист результатов

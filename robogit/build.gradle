@@ -44,23 +44,23 @@ compileTestKotlin {
 //    commandLine 'npm', 'install'
 //}
 //
-//task npmBuild(type: Exec) {
+task npmBuild(type: Exec) {
 //    dependsOn npmInstall
-//    workingDir 'front'
-//    commandLine 'npm', 'run', 'webpack'
-//}
+    workingDir 'front'
+    commandLine 'npm', 'run', 'build'
+}
 //
-//task clearStatic(type: Delete) {
-//    delete file('src/main/resources/static').listFiles()
-//}
-//
-//task copyStatic(type: Copy) {
-//    dependsOn npmBuild
-//    dependsOn clearStatic
-//    from 'front/build/'
-//    into 'src/main/resources/static/'
-//}
-//
-//processResources() {
-//    dependsOn copyStatic
-//}
+task clearStatic(type: Delete) {
+    delete file('src/main/resources/static').listFiles()
+}
+
+task copyStatic(type: Copy) {
+    dependsOn npmBuild
+    dependsOn clearStatic
+    from 'front/build/'
+    into 'src/main/resources/static/'
+}
+
+processResources() {
+    dependsOn copyStatic
+}

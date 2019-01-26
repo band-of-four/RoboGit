@@ -238,17 +238,6 @@
 }
 .item-checout .first-column-checkout{
     width: 12%;
-    max-width: 12%
-}
-
-.img-thumbnail{
-    width: 12%;
-    max-width: 12%
-}
-
-img.thumbnail{
-    width: 12%;
-    max-width: 12%
 }
 .item-checout td{
     border-bottom: 1px solid #ddd;

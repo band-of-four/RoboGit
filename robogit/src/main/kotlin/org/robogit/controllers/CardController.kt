@@ -1,6 +1,5 @@
 package org.robogit.controllers
 
-import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Card
 import org.robogit.domain.ProductCard
 import org.robogit.domain.ProductUser
@@ -15,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -48,30 +45,37 @@ class CardController {
     println("Controller!")
     val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
     val information = informationRepository?.findById(partId)?.get()
+    val user = userRepository?.findById(userDetails.userId)?.get()
+    val productUser_ = productUserRepository?.findByUserIdAndProductId(user?.id!!, partId)
+    if (productUser_ != null){
+      productUser_.amount = productUser_.amount!! + 1
+      productUserRepository?.save(productUser_)
+      return ResponseEntity(HttpStatus.OK)
+    }
     val productUser = ProductUser()
     productUser.information = information
     productUser.amount = amount
-    productUser.user = userRepository?.findById(userDetails.userId)?.get()
+    productUser.user = user
     productUserRepository?.save(productUser)
     return ResponseEntity(HttpStatus.CREATED)
   }
 
   @PostMapping("/card/remove")
-  fun removeFromCard(@RequestParam productUserId: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+  fun removeFromCard(@RequestParam partId: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
     println("Controller!")
     val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
-    val byUserIdAndId = productUserRepository?.findByUserIdAndId(userDetails.userId, productUserId)
+    val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userDetails.userId, partId)
     productUserRepository?.delete(byUserIdAndId!!)
     return ResponseEntity(HttpStatus.OK)
   }
 
   @PostMapping("/card/amount/set")
-  fun setAmount(@RequestParam productUserId: Int, @RequestParam amount: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
+  fun setAmount(@RequestParam productId: Int, @RequestParam amount: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
     println("Controller!")
     val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
-    val byUserIdAndId = productUserRepository?.findByUserIdAndId(userDetails.userId, productUserId)
+    val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userDetails.userId, productId)
     if (amount < 0) {
-      return ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST)
+      return ResponseEntity(HttpStatus.BAD_REQUEST)
     }
     byUserIdAndId?.amount = amount
     productUserRepository?.save(byUserIdAndId!!)
@@ -109,7 +113,7 @@ class CardController {
   @PostMapping("/card/copyShared")
   fun copySharedCardToLocal(@RequestParam sharedId: Int, authentication: Authentication): ResponseEntity<HttpStatus> {
     val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
-    val user = User().apply { id = userDetails.userId  } // FIXME
+    val user = User().apply { id = userDetails.userId  }
     val sharedCard = getSharedCard(sharedId)
         ?: throw IllegalArgumentException("Shared card with id: $sharedId not found") // FIXME maybe should return bad http status
     cleanLocalCard(authentication)

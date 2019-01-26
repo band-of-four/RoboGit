@@ -41,6 +41,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
         .authorizeRequests()
         .antMatchers("/login", "/logout").permitAll()
         .antMatchers("/api/order/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
+        .antMatchers("/api/card/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.toString())
         .antMatchers("/api/information/**").permitAll()
         .antMatchers("/api/telebot/**").permitAll()
