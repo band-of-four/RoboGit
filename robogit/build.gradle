@@ -21,6 +21,7 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
     compile 'org.jetbrains.kotlin:kotlin-reflect:1.1.51'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
@@ -43,20 +44,20 @@ compileTestKotlin {
 //    workingDir 'front'
 //    commandLine 'npm', 'install'
 //}
-//
+
 task npmBuild(type: Exec) {
 //    dependsOn npmInstall
     workingDir 'front'
     commandLine 'npm', 'run', 'build'
 }
-//
-task clearStatic(type: Delete) {
-    delete file('src/main/resources/static').listFiles()
-}
+
+//task clearStatic(type: Delete) {
+//    delete file('src/main/resources/static').listFiles()
+//}
 
 task copyStatic(type: Copy) {
     dependsOn npmBuild
-    dependsOn clearStatic
+//    dependsOn clearStatic
     from 'front/build/'
     into 'src/main/resources/static/'
 }
