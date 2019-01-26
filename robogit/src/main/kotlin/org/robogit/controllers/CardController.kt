@@ -131,9 +131,11 @@ class CardController {
   @PostMapping("/card/clean")
   fun cleanLocalCard(authentication: Authentication): ResponseEntity<HttpStatus> {
     val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
-    val user = User().apply { id = userDetails.userId } // FIXME
-    (user.products as MutableSet<ProductUser>).clear()
-    userRepository?.save(user)
+    val user = User().apply { id = userDetails.userId }
+    val infos = productUserRepository?.findAllByUserId(user.id!!)?.map { it.information }
+    val products = infos?.map{productUserRepository?.findByUserIdAndProductId(user.id!!, it.id!!)}
+//    val products =  cardDto?.map{productUserRepository?.findById(it.productUserId)?.get()}
+    productUserRepository?.deleteAll(products!!)
     return ResponseEntity(HttpStatus.OK)
   }
 

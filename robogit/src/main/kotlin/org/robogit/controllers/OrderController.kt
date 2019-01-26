@@ -52,7 +52,7 @@ open class OrderController {
     }
 
     @PostMapping("/order/create")
-    fun createOrder(@RequestBody card: List<CardElementDto>, authentication: Authentication): ResponseEntity<HttpStatus> {
+    fun createOrder(authentication: Authentication): ResponseEntity<HttpStatus> {
         println("Controller!")
         val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
         val userId = userDetails.userId
@@ -65,8 +65,9 @@ open class OrderController {
         order.user = userOpt.get()
         val savedOrder = orderRepository?.save(order)
 
-        for (item in card) {
-            val byUserIdAndId = productUserRepository?.findByUserIdAndId(userOpt.get().id!!, item.productUserId)
+        val card = productUserRepository?.findAllByUserId(userId)
+        for (item in card!!) {
+            val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userOpt.get().id!!, item.information.id!!)
             val productOrder = ProductOrder()
             val information = byUserIdAndId?.information
             productOrder.amount = byUserIdAndId?.amount
