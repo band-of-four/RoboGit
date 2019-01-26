@@ -43,6 +43,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
         .antMatchers("/api/order/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/card/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.toString())
+        .antMatchers("/api/product/**").hasAnyAuthority(Role.ADMIN.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/information/**").permitAll()
         .antMatchers("/api/telebot/**").permitAll()
         .and().formLogin().loginPage("/login")

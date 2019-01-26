@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/admin")
 @Slf4j
 class AdminController {
-    @Autowired
-    private val userRepository: UserRepository? = null
+  @Autowired
+  private val userRepository: UserRepository? = null
 
-    @PostMapping("/updateRole")
-    fun addPlatform(@RequestParam login: String, @RequestParam role : Role): ResponseEntity<HttpStatus> {
-        val user = userRepository?.findByLogin(login)
-        user?.role = role
-        userRepository?.save(user!!)
-        return ResponseEntity(HttpStatus.OK)
-    }
+  @PostMapping("/updateRole")
+  fun addPlatform(@RequestParam login: String, @RequestParam role: Role): ResponseEntity<HttpStatus> {
+    val user = userRepository?.findByLogin(login) ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
+    user.role = role
+    userRepository.save(user)
+    return ResponseEntity(HttpStatus.OK)
+  }
 }
