@@ -3,9 +3,11 @@ package org.robogit.repository
 import org.robogit.domain.ProductUser
 import org.robogit.domain.User
 import org.robogit.dto.CardElementDto
+import org.springframework.data.jpa.repository.Lock
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
+import javax.persistence.LockModeType
 
 interface ProductUserRepository: CrudRepository<ProductUser, Int> {
 
@@ -39,7 +41,7 @@ interface ProductUserRepository: CrudRepository<ProductUser, Int> {
    * @param userId - ид юзера
    * @return Лист результатов
    */
-  @Query("SELECT new org.robogit.dto.CardElementDto(pu.information, pu.amount, pu.id) FROM ProductUser pu JOIN pu.user puu WHERE puu.id = :userId")
+  @Query("SELECT new org.robogit.dto.CardElementDto(pu.information, pu.amount) FROM ProductUser pu JOIN pu.user puu WHERE puu.id = :userId")
   fun findAllByUserId(@Param("userId") userId:Int) : List<CardElementDto>?
 
   /**
