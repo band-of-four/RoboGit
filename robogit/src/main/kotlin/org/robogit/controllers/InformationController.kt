@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Information
 import org.robogit.dto.InformationSumDto
 import org.robogit.repository.InformationRepository
-import org.robogit.service.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,10 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import java.nio.file.Files
 import java.nio.file.Paths
 import javax.servlet.ServletContext
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.PostMapping
 
 
 @RestController
@@ -29,8 +24,8 @@ class InformationController {
   @Autowired
   private val informationRepository: InformationRepository? = null
 
-  @Autowired
-  private val storageService: StorageService? = null
+//  @Autowired
+//  private val storageService: StorageService? = null
 
   @ModelAttribute
   fun setResponseHeaders(response: HttpServletResponse) {
@@ -66,11 +61,11 @@ class InformationController {
     return Files.readAllBytes(path)
   }
 
-  @PostMapping("/")
-  fun handleFileUpload(@RequestParam("file") file: MultipartFile,
-                       redirectAttributes: RedirectAttributes): String {
-
-    storageService?.store(file)
-    return "OK"
-  }
+//  @PostMapping("/")
+//  fun handleFileUpload(@RequestParam("file") file: MultipartFile,
+//                       redirectAttributes: RedirectAttributes): String {
+//
+//    storageService?.store(file)
+//    return "OK"
+//  }
 }

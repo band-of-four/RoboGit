@@ -48,6 +48,19 @@ class ProductController {
     informationRepository?.save(infoWithId)
   }
 
+  private fun removeImage(infoWithId: Information) {
+    if (infoWithId.image != null && infoWithId.image != "") {
+      File(infoWithId.image).delete()
+      infoWithId.image = null
+      informationRepository?.save(infoWithId)
+    }
+  }
+
+  private fun updateImage(infoWithId: Information, img: MultipartFile) {
+    removeImage(infoWithId)
+    addImage(infoWithId, img)
+  }
+
   @PostMapping("/addPlatform")
   fun addPlatform(@RequestBody platformDto: PlatformDto,
                   @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
@@ -186,7 +199,8 @@ class ProductController {
   }
 
   @PostMapping("/updatePlatform")
-  fun updatePlatform(@RequestBody platformDto: PlatformDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
+  fun updatePlatform(@RequestBody platformDto: PlatformDto, @RequestParam id: Int,
+                     @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
     val platform = platformRepository?.findPlatformById(id)
     val information = informationRepository?.findInformationById(id)
     information?.type = Type.PLATFORM
@@ -205,13 +219,15 @@ class ProductController {
     platform?.flashmemory = platformDto.flashMemory
     platform?.ram = platformDto.ram
     platform?.information = information
-    informationRepository?.save(information!!)
+    val infoWithId = informationRepository?.save(information!!)
     platformRepository?.save(platform!!)
+    if (img != null && infoWithId != null) updateImage(infoWithId, img)
     return ResponseEntity(HttpStatus.OK)
   }
 
   @PostMapping("/updateController")
-  fun updateController(@RequestBody controllerDto: ControllerDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
+  fun updateController(@RequestBody controllerDto: ControllerDto, @RequestParam id: Int,
+                       @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
     val controller = controllerRepository?.findControllerById(id)
     val information = informationRepository?.findInformationById(id)
     information?.type = Type.CONTROLLER
@@ -228,13 +244,15 @@ class ProductController {
     controller?.ram = controllerDto.ram
     controller?.information = information
     controller?.controllerInterface = controllerDto.interface_
-    informationRepository?.save(information!!)
+    val infoWithId = informationRepository?.save(information!!)
     controllerRepository?.save(controller!!)
+    if (img != null && infoWithId != null) updateImage(infoWithId, img)
     return ResponseEntity(HttpStatus.OK)
   }
 
   @PostMapping("/updateMechanicDetail")
-  fun updateMechanicDetail(@RequestBody mechanicDetailDto: MechanicDetailDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
+  fun updateMechanicDetail(@RequestBody mechanicDetailDto: MechanicDetailDto, @RequestParam id: Int,
+                           @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
     val mechanicDetail = mechanicDetailRepository?.findMechanicDetailById(id)
     val information = informationRepository?.findInformationById(id)
     information?.type = Type.MECHANIC_DETAIL
@@ -247,13 +265,15 @@ class ProductController {
     information?.amount = mechanicDetailDto.amount
     mechanicDetail?.material = mechanicDetailDto.material
     mechanicDetail?.information = information
-    informationRepository?.save(information!!)
+    val infoWithId = informationRepository?.save(information!!)
     mechanicDetailRepository?.save(mechanicDetail!!)
+    if (img != null && infoWithId != null) updateImage(infoWithId, img)
     return ResponseEntity(HttpStatus.OK)
   }
 
   @PostMapping("/updateMotor")
-  fun updateMotor(@RequestBody motorDto: MotorDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
+  fun updateMotor(@RequestBody motorDto: MotorDto, @RequestParam id: Int,
+                  @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
     val motor = motorRepository?.findMotorById(id)
     val information = informationRepository?.findInformationById(id)
     information?.type = Type.MOTOR
@@ -269,13 +289,15 @@ class ProductController {
     motor?.motorInterface = motorDto.interface_
     motor?.power = motorDto.power
     motor?.information = information
-    informationRepository?.save(information!!)
+    val infoWithId = informationRepository?.save(information!!)
     motorRepository?.save(motor!!)
+    if (img != null && infoWithId != null) updateImage(infoWithId, img)
     return ResponseEntity(HttpStatus.OK)
   }
 
   @PostMapping("/updateSensor")
-  fun updateSensor(@RequestBody sensorDto: SensorDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
+  fun updateSensor(@RequestBody sensorDto: SensorDto, @RequestParam id: Int,
+                   @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
     val sensor = sensorRepository?.findSensorById(id)
     val information = informationRepository?.findInformationById(id)
     information?.type = Type.SENSOR
@@ -290,13 +312,15 @@ class ProductController {
     sensor?.maxVoltage = sensorDto.max_voltage
     sensor?.sensorInterface = sensorDto.interface_
     sensor?.information = information
-    informationRepository?.save(information!!)
+    val infoWithId = informationRepository?.save(information!!)
     sensorRepository?.save(sensor!!)
+    if (img != null && infoWithId != null) updateImage(infoWithId, img)
     return ResponseEntity(HttpStatus.OK)
   }
 
   @PostMapping("/updateOther")
-  fun updateOther(@RequestBody otherDto: OtherDto, @RequestParam id: Int): ResponseEntity<HttpStatus> {
+  fun updateOther(@RequestBody otherDto: OtherDto, @RequestParam id: Int,
+                  @RequestParam("file") img: MultipartFile?): ResponseEntity<HttpStatus> {
     val information = informationRepository?.findOtherById(id)
     information?.type = Type.OTHER_RESOURCES
     information?.model = otherDto.model
@@ -306,7 +330,8 @@ class ProductController {
     information?.provider = otherDto.provider
     information?.description = otherDto.description
     information?.amount = otherDto.amount
-    informationRepository?.save(information!!)
+    val infoWithId = informationRepository?.save(information!!)
+    if (img != null && infoWithId != null) updateImage(infoWithId, img)
     return ResponseEntity(HttpStatus.OK)
   }
 
@@ -331,6 +356,7 @@ class ProductController {
       productUserRepository?.delete(it)
     }
     platformRepository?.delete(platform!!)
+    if (information?.image != null) removeImage(information)
     informationRepository?.delete(information!!)
     return ResponseEntity(HttpStatus.OK)
   }
@@ -354,6 +380,7 @@ class ProductController {
       productOrderRepository?.save(it)
     }
     controllerRepository?.delete(controller!!)
+    if (information?.image != null) removeImage(information)
     informationRepository?.delete(information!!)
     return ResponseEntity(HttpStatus.OK)
   }
@@ -377,6 +404,7 @@ class ProductController {
       productOrderRepository?.save(it)
     }
     mechanicDetailRepository?.delete(mechanicDetail!!)
+    if (information?.image != null) removeImage(information)
     informationRepository?.delete(information!!)
     return ResponseEntity(HttpStatus.OK)
   }
@@ -398,6 +426,7 @@ class ProductController {
     }
     productUser?.forEach { productUserRepository?.delete(it) }
     motorRepository?.delete(motor!!)
+    if (information?.image != null) removeImage(information)
     informationRepository?.delete(information!!)
     return ResponseEntity(HttpStatus.OK)
   }
@@ -419,6 +448,7 @@ class ProductController {
     }
     productUser?.forEach { productUserRepository?.delete(it) }
     sensorRepository?.delete(sensor!!)
+    if (information?.image != null) removeImage(information)
     informationRepository?.delete(information!!)
     return ResponseEntity(HttpStatus.OK)
   }
@@ -438,6 +468,7 @@ class ProductController {
       productOrderRepository?.save(it)
     }
     productUser?.forEach { productUserRepository?.delete(it) }
+    if (information?.image != null) removeImage(information)
     informationRepository?.delete(information!!)
     return ResponseEntity(HttpStatus.OK)
   }
