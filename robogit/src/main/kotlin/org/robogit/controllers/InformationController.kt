@@ -1,6 +1,7 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
+import org.robogit.domain.Information
 import org.robogit.dto.InformationSumDto
 import org.robogit.repository.InformationRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,5 +37,11 @@ class InformationController {
         println("getInformationByPage")
         val page = PageRequest.of(numPage, 50)
         return informationRepository?.findPagePopular(page)?.content
+    }
+
+    @GetMapping("/information/by_id/{id}")
+    fun getInformationById(@PathVariable("id") id: Int): Information? {
+        println("getInformationByPage")
+        return informationRepository?.findById(id)?.get()
     }
 }

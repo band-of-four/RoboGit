@@ -18,7 +18,6 @@ const store = createStore(reducers, composeWithDevTools(
 ));
 
 const history = syncHistoryWithStore(browserHistory, store);
-console.log("!");
 
 ReactDOM.render(
   <Provider store={store}>
