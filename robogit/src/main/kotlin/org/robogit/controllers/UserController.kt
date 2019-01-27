@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
 
 @RestController
 @RequestMapping("/api")
@@ -26,5 +27,10 @@ class UserController {
   fun getUser(@PathVariable("login") login: String?): User? {
     println("Controller!")
     return userRepository?.findByLogin(login!!)
+  }
+
+  @RequestMapping("/username")
+  fun getUsername(principal: Principal): String {
+    return principal.name
   }
 }
