@@ -11,9 +11,10 @@ import javax.validation.constraints.NotNull
  * login - логин пользователя в системе
  * password - пароль пользователя в системе
  * telegram_id - id в телеграме
+ * name - имя пользователя, определяющее как к нему обращаться
  */
 @Entity
-@Table(name = "users", schema = DatabaseConfig.SCHEMA_NAME)
+@Table(name = "users", schema = DatabaseConfig.SCHEMA_NAME, uniqueConstraints = [UniqueConstraint(columnNames = ["login"])])
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
@@ -25,7 +26,10 @@ class User {
     @Column
     var login: String? = null
 
-    @NotBlank
+    @Column
+    var name: String? = null
+
+//    @NotBlank
     @Column
     var password: String? = null
 

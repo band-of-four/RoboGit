@@ -62,7 +62,7 @@ class TelegramControllerDev {
     val user = User().apply {
       this.login = "bad_boy"
       this.password = "qwerty12345"
-      this.role = Role.AUTHORIZED
+      this.role = Role.ROLE_USER
       this.telegramId = "12324141"
     }
     userRepository?.save(user)

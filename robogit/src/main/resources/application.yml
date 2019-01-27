@@ -12,7 +12,19 @@ spring:
           use_jdbc_metadata_defaults: false
     hibernate:
        ddl-auto: validate # helios config
-      # ddl-auto: create-drop # docker config
+#       ddl-auto: create-drop # docker config
+
+facebook:
+  client:
+    clientId: clientId
+    clientSecret: clientSecret # FIXME do not forget to remove it before new commit
+    accessTokenUri: https://graph.facebook.com/oauth/access_token
+    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://graph.facebook.com/me
 
 server:
   port: 8080
