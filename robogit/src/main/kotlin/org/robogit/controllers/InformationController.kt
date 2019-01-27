@@ -2,8 +2,10 @@ package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.Information
+import org.robogit.domain.Type
 import org.robogit.dto.InformationSumDto
-import org.robogit.repository.InformationRepository
+import org.robogit.dto.MegaInformationDto
+import org.robogit.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,6 +26,22 @@ class InformationController {
   @Autowired
   private val informationRepository: InformationRepository? = null
 
+  @Autowired
+  private val controllerRepository: ControllerRepository? = null
+
+  @Autowired
+  private val mechanicDetailRepository: MechanicDetailRepository? = null
+
+  @Autowired
+  private val motorRepository: MotorRepository? = null
+
+  @Autowired
+  private val platformRepository: PlatformRepository? = null
+
+  @Autowired
+  private val sensorRepository: SensorRepository? = null
+
+
 //  @Autowired
 //  private val storageService: StorageService? = null
 
@@ -35,7 +53,7 @@ class InformationController {
 
   @GetMapping("/information")
   fun getInformation(): List<InformationSumDto?>? {
-    println("Controller!")
+    println("GET ALL INFORMATIONS!")
     return informationRepository?.findPopular()
   }
 
@@ -47,7 +65,30 @@ class InformationController {
   }
 
   @GetMapping("/information/by_id/{id}")
-  fun getInformationById(@PathVariable("id") id: Int): Information? {
+  fun getInformationById(@PathVariable("id") id: Int): MegaInformationDto? {
+    println("getInformationById")
+    val information = informationRepository?.findById(id)?.get()
+    if (information?.type == Type.CONTROLLER){
+      return controllerRepository?.selectMegaInformationControllerById(id)
+    } else
+    if (information?.type == Type.MECHANIC_DETAIL){
+      return mechanicDetailRepository?.selectMegaInformationMechanicDetailById(id)
+    } else
+    if (information?.type == Type.MOTOR){
+        return motorRepository?.selectMegaInformationMotorById(id)
+    } else
+    if (information?.type == Type.PLATFORM){
+        return platformRepository?.selectMegaInformationPlatformById(id)
+    } else
+    if (information?.type == Type.SENSOR){
+        return sensorRepository?.selectMegaInformationSensorById(id)
+    } else {
+    return MegaInformationDto(information!!)
+    }
+  }
+
+  @GetMapping("/information_only/by_id/{id}")
+  fun getOnlyInformationById(@PathVariable("id") id: Int): Information? {
     println("getInformationByPage")
     return informationRepository?.findById(id)?.get()
   }

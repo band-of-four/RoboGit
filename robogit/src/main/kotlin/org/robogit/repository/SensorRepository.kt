@@ -2,6 +2,7 @@ package org.robogit.repository
 
 import org.robogit.domain.Interface
 import org.robogit.domain.Sensor
+import org.robogit.dto.MegaInformationDto
 import org.robogit.dto.SensorSumDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -115,4 +116,12 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
               @Param("max_min_voltage") max_min_voltage: Float?,
               @Param("min_max_voltage") min_max_voltage: Float?,
               @Param("max_max_voltage") max_max_voltage: Float?) : Page<Sensor>
+
+  /**
+   * Возвращает полную информацию о сенсоре
+   * @param id - ид мотора
+   * @return результат
+   */
+  @Query("SELECT new org.robogit.dto.MegaInformationDto(i, m) FROM Sensor m JOIN Information i ON i.id = m.id WHERE i.id = :id")
+  fun selectMegaInformationSensorById(@Param("id") id: Int): MegaInformationDto?
 }

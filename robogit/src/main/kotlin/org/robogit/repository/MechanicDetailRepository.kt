@@ -2,6 +2,7 @@ package org.robogit.repository
 
 import org.robogit.domain.MechanicDetail
 import org.robogit.dto.MechanicDetailSumDto
+import org.robogit.dto.MegaInformationDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
@@ -59,4 +60,11 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
               @Param("min_price") min_price: Float?,
               @Param("max_price") max_price: Float?) : Page<MechanicDetail>
 
+  /**
+   * Возвращает полную информацию о механической детали
+   * @param id - ид детали
+   * @return результат
+   */
+  @Query("SELECT new org.robogit.dto.MegaInformationDto(i, m) FROM MechanicDetail m JOIN Information i ON i.id = m.id WHERE i.id = :id")
+  fun selectMegaInformationMechanicDetailById(@Param("id") id: Int): MegaInformationDto?
 }
