@@ -2,6 +2,7 @@ package org.robogit.repository
 
 import org.robogit.domain.Interface
 import org.robogit.domain.Motor
+import org.robogit.dto.MegaInformationDto
 import org.robogit.dto.MotorSumDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -143,4 +144,12 @@ interface MotorRepository: CrudRepository<Motor, Int> {
               @Param("max_max_voltage") max_max_voltage: Float?,
               @Param("min_power") min_power: Float?,
               @Param("max_power") max_power: Float?) : Page<Motor>
+
+  /**
+   * Возвращает полную информацию о моторе
+   * @param id - ид мотора
+   * @return результат
+   */
+  @Query("SELECT new org.robogit.dto.MegaInformationDto(i, m) FROM Motor m JOIN Information i ON i.id = m.id WHERE i.id = :id")
+  fun selectMegaInformationMotorById(@Param("id") id: Int): MegaInformationDto?
 }

@@ -2,6 +2,7 @@ package org.robogit.repository
 
 import org.robogit.domain.Information
 import org.robogit.dto.InformationSumDto
+import org.robogit.dto.MegaInformationDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
@@ -108,4 +109,12 @@ interface InformationRepository : CrudRepository<Information, Int> {
   fun filterForOther( pagable: Pageable,
               @Param("min_price") min_price: Float?,
               @Param("max_price") max_price: Float?) : Page<Information>
+
+  /**
+   * Возвращает полную информацию о прочем ресурсе
+   * @param id - ид ресурса
+   * @return результат
+   */
+  @Query("SELECT new org.robogit.dto.MegaInformationDto(i) FROM Information i WHERE i.id = :id and i.type = org.robogit.domain.Type.OTHER_RESOURCES")
+  fun selectMegaInformationMotorById(@Param("id") id: Int): MegaInformationDto?
 }

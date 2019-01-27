@@ -2,6 +2,7 @@ package org.robogit.repository
 
 import org.robogit.domain.Controller
 import org.robogit.domain.Platform
+import org.robogit.dto.MegaInformationDto
 import org.robogit.dto.PlatformSumDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -229,4 +230,12 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
               @Param("max_flashmemory") max_flashmemory: Int?,
               @Param("min_ram") min_ram: Int?,
               @Param("max_ram") max_ram: Int?) : Page<Platform>
+
+  /**
+   * Возвращает полную информацию о платформе
+   * @param id - ид платформы
+   * @return результат
+   */
+  @Query("SELECT new org.robogit.dto.MegaInformationDto(i, m) FROM Platform m JOIN Information i ON i.id = m.id WHERE i.id = :id")
+  fun selectMegaInformationPlatformById(@Param("id") id: Int): MegaInformationDto?
 }

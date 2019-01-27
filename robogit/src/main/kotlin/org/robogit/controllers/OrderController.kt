@@ -62,7 +62,6 @@ open class OrderController {
     order.user = userOpt.get()
 
     val card = productUserRepository?.findAllByUserId(user.id!!)
-
     card?.forEach {
       val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userOpt.get().id!!, it.information.id!!)
       val information = byUserIdAndId?.information!!

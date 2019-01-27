@@ -3,6 +3,7 @@ package org.robogit.repository
 import org.robogit.domain.Controller
 import org.robogit.domain.Interface
 import org.robogit.dto.ControllerSumDto
+import org.robogit.dto.MegaInformationDto
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.domain.Page
@@ -162,4 +163,12 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
               @Param("max_max_voltage") max_max_voltage: Float?,
               @Param("min_analog_inputs") min_analog_inputs: Int?,
               @Param("max_analog_inputs") max_analog_inputs: Int?) : Page<Controller>
+
+  /**
+   * Возвращает полную информацию о контроллере
+   * @param id - ид контроллера
+   * @return результат
+   */
+  @Query("SELECT new org.robogit.dto.MegaInformationDto(i, c) FROM Controller c JOIN Information i ON i.id = c.id WHERE i.id = :id")
+  fun selectMegaInformationControllerById(@Param("id") id: Int): MegaInformationDto?
 }
