@@ -26,7 +26,7 @@ ReactDOM.render(
         <Route path='/' component={Informations}/>
         <Route path='/categories/:id' component={Informations}/>
       </Route>
-      <Route path='/informations/:id' component={Information}/>
+      <Route path='/information/:id' component={Information}/>
       <Route path='/basket' component={Basket} />
     </Router>
   </Provider>,
