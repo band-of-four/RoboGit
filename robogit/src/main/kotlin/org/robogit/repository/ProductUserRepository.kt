@@ -3,11 +3,9 @@ package org.robogit.repository
 import org.robogit.domain.ProductUser
 import org.robogit.domain.User
 import org.robogit.dto.CardElementDto
-import org.springframework.data.jpa.repository.Lock
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import javax.persistence.LockModeType
 
 interface ProductUserRepository: CrudRepository<ProductUser, Int> {
 

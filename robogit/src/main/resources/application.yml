@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres # docker config
-    # url: jdbc:postgresql://localhost:5432/studs # helios config
+#    url: jdbc:postgresql://localhost:5432/postgres # docker config
+     url: jdbc:postgresql://localhost:5432/studs # helios config
     username: USERNAME
     password: PASSWORD
     driver-class-name: org.postgresql.Driver
@@ -11,8 +11,8 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
     hibernate:
-      # ddl-auto: validate # helios config
-      ddl-auto: create-drop # docker config
+       ddl-auto: validate # helios config
+      # ddl-auto: create-drop # docker config
 
 server:
   port: 8080
