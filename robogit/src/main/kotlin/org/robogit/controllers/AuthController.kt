@@ -22,24 +22,4 @@ class AuthController {
   @GetMapping("/logout")
   fun logout() = "/logout.html"
 
-  // FIXME do not use the method, use [OAuth2AuthenticationSuccessHandler] instead
-  @GetMapping("/oauth-login-success")
-  fun findOrCreateLocalUser(principal: Principal?): String {
-    if (principal == null) return "redirect:/login"
-    return if (principal is OAuth2Authentication && principal.userAuthentication.details is Map<*, *>) {
-      // username is a real name
-      val username = (principal.userAuthentication.details as Map<String, String>)["name"]
-      // login is a unique key that identifies the user
-      val login = principal.name
-      if (!userRepository?.existsByLogin(login)!!) {
-        val user = User().apply {
-          this.login = login
-          this.name = username
-          this.role = Role.ROLE_USER
-        }
-        userRepository?.save(user)
-      }
-      "/"
-    } else "redirect:/login"
-  }
 }

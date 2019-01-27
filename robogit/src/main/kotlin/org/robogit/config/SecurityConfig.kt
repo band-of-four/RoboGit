@@ -38,13 +38,12 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
   @Autowired
   private var oAuth2AuthenticationSuccessHandler: OAuth2AuthenticationSuccessHandler? = null
 
-  // TODO add redirects
   override fun configure(http: HttpSecurity) {
     http.csrf().disable()
         .authorizeRequests()
         .antMatchers("/login**", "/logout**").permitAll()
         .antMatchers("/api/order/**").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString())
-        .antMatchers("/").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString()) // FIXME
+        .antMatchers("/").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/card/**").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.toString())
         .antMatchers("/api/product/**").hasAnyAuthority(Role.ADMIN.toString(), Role.EMPLOYEE.toString())
