@@ -10,7 +10,6 @@ out/
 build/
 gradle/
 
-
-node_modules/
+robogit/front/node_modules/
 .teletoken
 
