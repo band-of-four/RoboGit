@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j
 import org.robogit.domain.User
 import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,8 +30,20 @@ class UserController {
     return userRepository?.findByLogin(login!!)
   }
 
-  @RequestMapping("/username")
-  fun getUsername(principal: Principal): String {
+  @RequestMapping("/getUsername")
+  fun getUsername(principal: Principal?): String? {
+    if (principal == null) return null
+    return if (principal is OAuth2Authentication && principal.userAuthentication.details is Map<*, *>) {
+      (principal.userAuthentication.details as Map<String, String>)["name"]
+    } else null
+  }
+
+  @RequestMapping("/getLogin")
+  fun getLogin(principal: Principal?): String? {
+    if (principal == null) return null
     return principal.name
   }
+
+  @RequestMapping("/getPrincipal")
+  fun getPrincipal(principal: Principal?) = principal
 }

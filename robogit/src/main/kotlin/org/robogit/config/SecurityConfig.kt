@@ -1,19 +1,14 @@
 package org.robogit.config
 
 import org.robogit.domain.Role
+import org.robogit.repository.UserRepository
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.BeanIds
 import org.springframework.context.annotation.Bean
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.security.oauth2.client.OAuth2ClientContext
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices
@@ -35,23 +30,31 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
   @Autowired
+  private var userRepository: UserRepository? = null
+
+  @Autowired
   private var oauth2ClientContext: OAuth2ClientContext? = null
+
+  @Autowired
+  private var oAuth2AuthenticationSuccessHandler: OAuth2AuthenticationSuccessHandler? = null
 
   // TODO add redirects
   override fun configure(http: HttpSecurity) {
     http.csrf().disable()
         .authorizeRequests()
         .antMatchers("/login**", "/logout**").permitAll()
-        .antMatchers("/api/order/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
-        .antMatchers("/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString()) // FIXME
-        .antMatchers("/api/card/**").hasAnyAuthority(Role.ADMIN.toString(), Role.AUTHORIZED.toString(), Role.EMPLOYEE.toString())
+        .antMatchers("/api/order/**").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString())
+        .antMatchers("/").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString()) // FIXME
+        .antMatchers("/api/card/**").hasAnyAuthority(Role.ADMIN.toString(), Role.ROLE_USER.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.toString())
         .antMatchers("/api/product/**").hasAnyAuthority(Role.ADMIN.toString(), Role.EMPLOYEE.toString())
         .antMatchers("/api/information/**").permitAll()
         .antMatchers("/api/telebot/**").permitAll()
+        .antMatchers("/api/getLogin", "/api/getUsername").authenticated()
         .and().formLogin().loginPage("/login")
-        .and().logout().logoutUrl("/logout")
+        .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
         .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter::class.java)
+
   }
 
   private fun ssoFilter(): Filter {
@@ -61,6 +64,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
     val tokenServices = UserInfoTokenServices(facebookResource().userInfoUri, facebook().clientId)
     tokenServices.setRestTemplate(facebookTemplate)
     facebookFilter.setTokenServices(tokenServices)
+    facebookFilter.setAuthenticationSuccessHandler(oAuth2AuthenticationSuccessHandler)
     return facebookFilter
   }
 

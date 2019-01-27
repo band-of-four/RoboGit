@@ -12,6 +12,11 @@ interface UserRepository : CrudRepository<User, Int> {
   fun findByLogin(login: String): User?
 
   /**
+   * @return true if [User] with specified [login] already exists
+   */
+  fun existsByLogin(login: String): Boolean
+
+  /**
    * Finds [User]s with specified [telegramId].
    * @param telegramId is an identifier related to a [User] of a few [User]s.
    * @return List with selected users.

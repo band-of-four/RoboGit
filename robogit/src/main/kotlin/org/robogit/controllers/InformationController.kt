@@ -35,13 +35,13 @@ class InformationController {
 
   @GetMapping("/information")
   fun getInformation(): List<InformationSumDto?>? {
-    println("Controller!")
+    println("/api/information called")
     return informationRepository?.findPopular()
   }
 
   @GetMapping("/information/{page}")
   fun getInformationByPage(@PathVariable("page") numPage: Int): List<InformationSumDto?>? {
-    println("getInformationByPage")
+    println("/api/information/{page} called")
     val page = PageRequest.of(numPage, 50)
     return informationRepository?.findPagePopular(page)?.content
   }
