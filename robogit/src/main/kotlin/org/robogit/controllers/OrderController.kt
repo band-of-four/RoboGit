@@ -52,7 +52,7 @@ open class OrderController {
     }
 
     @PostMapping("/order/create")
-    fun createOrder(authentication: Authentication): ResponseEntity<String> {
+    fun createOrder(authentication: Authentication): ResponseEntity<CreateOrderResponseDto> {
         println("Controller!")
         val userDetails: OpenAmUserDetails = authentication.details as OpenAmUserDetails
         val userId = userDetails.userId
@@ -70,7 +70,7 @@ open class OrderController {
             val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userOpt.get().id!!, it.information.id!!)
             val information = byUserIdAndId?.information!!
             if (information.amount!! < it.amount){
-                return ResponseEntity(it.information.name!!, HttpStatus.BAD_REQUEST)
+                return ResponseEntity(CreateOrderResponseDto(it.information.name!!), HttpStatus.BAD_REQUEST)
             }
         }
 
@@ -92,6 +92,9 @@ open class OrderController {
         if (order.user?.email != null && order.user?.email!!.isNotEmpty()) mail.sendMail(order.user?.email!!, "Заказ №" + order.id, mail.createOrderMessage(card))
 
         println("SAVED ORDER ID: "+savedOrder!!.id.toString())
-        return ResponseEntity(savedOrder!!.id.toString(), HttpStatus.CREATED)
+        val resp = CreateOrderResponseDto(savedOrder.id.toString())
+        return ResponseEntity(CreateOrderResponseDto(savedOrder.id.toString()), HttpStatus.CREATED)
     }
+
+    class CreateOrderResponseDto(val message:String)
 }
