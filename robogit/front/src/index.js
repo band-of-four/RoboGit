@@ -14,21 +14,21 @@ import Information from 'containers/information'
 import Basket from 'containers/basket'
 
 const store = createStore(reducers, composeWithDevTools(
-  applyMiddleware(thunk)
+    applyMiddleware(thunk)
 ));
 
 const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Route component={Layout}>
-        <Route path='/' component={Informations}/>
-        <Route path='/categories/:id' component={Informations}/>
-      </Route>
-      <Route path='/information/:id' component={Information}/>
-      <Route path='/basket' component={Basket} />
-    </Router>
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <Router history={history}>
+            <Route component={Layout}>
+                <Route path='/' component={Informations}/>
+                <Route path='/categories/:id' component={Informations}/>
+            </Route>
+            <Route path='/information/:id' component={Information}/>
+            <Route path='/basket' component={Basket}/>
+        </Router>
+    </Provider>,
+    document.getElementById('root')
 );

@@ -205,6 +205,7 @@
 }
 .well{
     border-radius: 0 0 4px 4px;
+    margin-block-start: 20px;
 }
 .open>.dropdown-menu{
     min-width: 100%;
@@ -380,11 +381,12 @@ nav.navbar-inverse .navbar-nav>li>a:hover,nav.navbar-inverse .navbar-nav>li>a.Ac
     line-height: 50px;
     color: #666;
 }
+
 .ab-details-info{
-    float: left;
+    float: right;
     line-height: 55px;
     margin-left: 10px;
-    font-size:12px;
+    font-size: 15px;
     color: #777;
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
 }
