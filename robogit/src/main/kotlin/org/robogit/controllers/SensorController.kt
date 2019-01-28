@@ -1,6 +1,7 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
+import org.robogit.domain.Information
 import org.robogit.domain.Sensor
 import org.robogit.dto.SensorSumDto
 import org.robogit.repository.SensorRepository
@@ -36,7 +37,7 @@ class SensorController {
                @RequestParam(required = false) min_min_voltage: Float?,
                @RequestParam(required = false) max_min_voltage: Float?,
                @RequestParam(required = false) min_max_voltage: Float?,
-               @RequestParam(required = false) max_max_voltage: Float?) : List<Sensor?>?{
+               @RequestParam(required = false) max_max_voltage: Float?) : List<Information?>?{
         println("Controller!")
         val page = PageRequest.of(pageNum, 50, Sort.by(Sort.Direction.ASC,"id"))
         return sensorRepository?.filter(page, min_price, max_price, min_min_voltage, max_min_voltage,

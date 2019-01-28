@@ -1,5 +1,6 @@
 package org.robogit.repository
 
+import org.robogit.domain.Information
 import org.robogit.domain.Interface
 import org.robogit.domain.Motor
 import org.robogit.dto.MegaInformationDto
@@ -126,7 +127,7 @@ interface MotorRepository: CrudRepository<Motor, Int> {
    * @param max_power - максимальная мощности
    * @return страницу результата
    */
-  @Query("SELECT m FROM Motor m JOIN m.information mi WHERE" +
+  @Query("SELECT mi FROM Motor m JOIN m.information mi WHERE" +
           "(:min_price IS NULL OR :min_price < mi.price) AND" +
           "(:max_price IS NULL OR :max_price > mi.price) AND" +
           "(:min_min_voltage IS NULL OR :min_min_voltage < m.minVoltage) AND" +
@@ -143,7 +144,7 @@ interface MotorRepository: CrudRepository<Motor, Int> {
               @Param("min_max_voltage") min_max_voltage: Float?,
               @Param("max_max_voltage") max_max_voltage: Float?,
               @Param("min_power") min_power: Float?,
-              @Param("max_power") max_power: Float?) : Page<Motor>
+              @Param("max_power") max_power: Float?) : Page<Information>
 
   /**
    * Возвращает полную информацию о моторе

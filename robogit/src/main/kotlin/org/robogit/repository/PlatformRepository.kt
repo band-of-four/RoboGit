@@ -1,6 +1,7 @@
 package org.robogit.repository
 
 import org.robogit.domain.Controller
+import org.robogit.domain.Information
 import org.robogit.domain.Platform
 import org.robogit.dto.MegaInformationDto
 import org.robogit.dto.PlatformSumDto
@@ -200,15 +201,13 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
    * @param max_ram - максимальное значение ram
    * @return страницу результата
    */
-  @Query("SELECT p FROM Platform p JOIN p.information pi WHERE" +
+  @Query("SELECT pi FROM Platform p JOIN p.information pi WHERE" +
           "(:min_price IS NULL OR :min_price < pi.price) AND" +
           "(:max_price IS NULL OR :max_price > pi.price) AND" +
           "(:min_min_voltage IS NULL OR :min_min_voltage < p.minVoltage) AND" +
           "(:max_min_voltage IS NULL OR :max_min_voltage > p.minVoltage) AND" +
           "(:min_max_voltage IS NULL OR :min_max_voltage < p.maxVoltage) AND" +
           "(:max_max_voltage IS NULL OR :max_max_voltage > p.maxVoltage) AND" +
-          "(:min_freq IS NULL OR :min_freq < p.freq) AND" +
-          "(:max_freq IS NULL OR :max_freq > p.freq) AND" +
           "(:min_analog_inputs IS NULL OR :min_analog_inputs < p.analogInputs) AND" +
           "(:max_analog_inputs IS NULL OR :max_analog_inputs > p.analogInputs) AND" +
           "(:min_flashmemory IS NULL OR :min_flashmemory < p.flashmemory) AND" +
@@ -222,14 +221,12 @@ interface PlatformRepository: CrudRepository<Platform, Int> {
               @Param("max_min_voltage") max_min_voltage: Float?,
               @Param("min_max_voltage") min_max_voltage: Float?,
               @Param("max_max_voltage") max_max_voltage: Float?,
-              @Param("min_freq") min_freq: Float?,
-              @Param("max_freq") max_freq: Float?,
               @Param("min_analog_inputs") min_analog_inputs: Int?,
               @Param("max_analog_inputs") max_analog_inputs: Int?,
               @Param("min_flashmemory") min_flashmemory: Int?,
               @Param("max_flashmemory") max_flashmemory: Int?,
               @Param("min_ram") min_ram: Int?,
-              @Param("max_ram") max_ram: Int?) : Page<Platform>
+              @Param("max_ram") max_ram: Int?) : Page<Information>
 
   /**
    * Возвращает полную информацию о платформе

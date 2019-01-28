@@ -1,6 +1,7 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
+import org.robogit.domain.Information
 import org.robogit.domain.Platform
 import org.robogit.dto.PlatformSumDto
 import org.robogit.repository.PlatformRepository
@@ -42,18 +43,16 @@ class PlatformController {
                @RequestParam(required = false) max_min_voltage: Float?,
                @RequestParam(required = false) min_max_voltage: Float?,
                @RequestParam(required = false) max_max_voltage: Float?,
-               @RequestParam(required = false) min_freq: Float?,
-               @RequestParam(required = false) max_freq: Float?,
                @RequestParam(required = false) min_analog_inputs: Int?,
                @RequestParam(required = false) max_analog_inputs: Int?,
                @RequestParam(required = false) min_flashmemory: Int?,
                @RequestParam(required = false) max_flashmemory: Int?,
                @RequestParam(required = false) min_ram: Int?,
-               @RequestParam(required = false) max_ram: Int?) : List<Platform?>?{
+               @RequestParam(required = false) max_ram: Int?) : List<Information?>?{
         println("Controller!")
         val page = PageRequest.of(pageNum, 50)
         return platformRepository?.filter(page, min_price, max_price, min_min_voltage, max_min_voltage,
-                min_max_voltage, max_max_voltage, min_freq, max_freq, min_analog_inputs,
+                min_max_voltage, max_max_voltage, min_analog_inputs,
                 max_analog_inputs, min_flashmemory, max_flashmemory, min_ram, max_ram)?.content
     }
 }

@@ -1,6 +1,7 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
+import org.robogit.domain.Information
 import org.robogit.domain.Motor
 import org.robogit.dto.MotorSumDto
 import org.robogit.repository.MotorRepository
@@ -37,7 +38,7 @@ class MotorController {
                @RequestParam(required = false) min_max_voltage: Float?,
                @RequestParam(required = false) max_max_voltage: Float?,
                @RequestParam(required = false) min_power: Float?,
-               @RequestParam(required = false) max_power: Float?) : List<Motor?>?{
+               @RequestParam(required = false) max_power: Float?) : List<Information?>?{
         println("Controller!")
         val page = PageRequest.of(pageNum, 50)
         return motorRepository?.filter(page, min_price, max_price, min_min_voltage, max_min_voltage,

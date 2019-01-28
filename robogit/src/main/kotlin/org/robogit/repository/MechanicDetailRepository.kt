@@ -1,5 +1,6 @@
 package org.robogit.repository
 
+import org.robogit.domain.Information
 import org.robogit.domain.MechanicDetail
 import org.robogit.dto.MechanicDetailSumDto
 import org.robogit.dto.MegaInformationDto
@@ -53,12 +54,12 @@ interface MechanicDetailRepository: CrudRepository<MechanicDetail, Int> {
    * @param max_price - максимальная цена
    * @return страницу результата
    */
-  @Query("SELECT m FROM MechanicDetail m JOIN m.information mi WHERE" +
+  @Query("SELECT mi FROM MechanicDetail m JOIN m.information mi WHERE" +
           "(:min_price IS NULL OR :min_price < mi.price) AND" +
           "(:max_price IS NULL OR :max_price > mi.price)")
   fun filter( pagable: Pageable,
               @Param("min_price") min_price: Float?,
-              @Param("max_price") max_price: Float?) : Page<MechanicDetail>
+              @Param("max_price") max_price: Float?) : Page<Information>
 
   /**
    * Возвращает полную информацию о механической детали

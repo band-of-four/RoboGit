@@ -1,6 +1,7 @@
 package org.robogit.repository
 
 import org.robogit.domain.Controller
+import org.robogit.domain.Information
 import org.robogit.domain.Interface
 import org.robogit.dto.ControllerSumDto
 import org.robogit.dto.MegaInformationDto
@@ -145,9 +146,11 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
    * @param max_analog_inputs - максимальное кол-во аналоговых входов
    * @return страницу результата
    */
-  @Query("SELECT c FROM Controller c JOIN c.information ci WHERE" +
+  @Query("SELECT ci FROM Controller c JOIN c.information ci WHERE" +
           "(:min_price IS NULL OR :min_price < ci.price) AND" +
           "(:max_price IS NULL OR :max_price > ci.price) AND" +
+          "(:min_ram IS NULL OR :min_ram < c.ram) AND" +
+          "(:max_ram IS NULL OR :max_ram  > c.ram) AND" +
           "(:min_min_voltage IS NULL OR :min_min_voltage < c.minVoltage) AND" +
           "(:max_min_voltage IS NULL OR :max_min_voltage > c.minVoltage) AND" +
           "(:min_max_voltage IS NULL OR :min_max_voltage < c.maxVoltage) AND" +
@@ -157,12 +160,14 @@ interface ControllerRepository : CrudRepository<Controller, Int> {
   fun filter( pagable: Pageable,
               @Param("min_price") min_price: Float?,
               @Param("max_price") max_price: Float?,
+              @Param("min_ram") min_ram: Float?,
+              @Param("max_ram") max_ram: Float?,
               @Param("min_min_voltage") min_min_voltage: Float?,
               @Param("max_min_voltage") max_min_voltage: Float?,
               @Param("min_max_voltage") min_max_voltage: Float?,
               @Param("max_max_voltage") max_max_voltage: Float?,
               @Param("min_analog_inputs") min_analog_inputs: Int?,
-              @Param("max_analog_inputs") max_analog_inputs: Int?) : Page<Controller>
+              @Param("max_analog_inputs") max_analog_inputs: Int?) : Page<Information>
 
   /**
    * Возвращает полную информацию о контроллере

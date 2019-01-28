@@ -8,12 +8,8 @@ import org.robogit.dto.MegaInformationDto
 import org.robogit.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
-import org.springframework.web.bind.annotation.ModelAttribute
 import java.nio.file.Files
 import java.nio.file.Paths
 import javax.servlet.ServletContext
@@ -100,6 +96,15 @@ class InformationController {
     rpath = "$rpath/$id"
     val path = Paths.get(rpath)
     return Files.readAllBytes(path)
+  }
+
+  @GetMapping("/information/filter")
+  fun filter(@RequestParam(defaultValue = "0", required = false) pageNum: Int,
+             @RequestParam(required = false) min_price: Float?,
+             @RequestParam(required = false) max_price: Float?) : List<Information?>?{
+    println("Controller!")
+    val page = PageRequest.of(pageNum, 50)
+    return informationRepository?.filter(page, min_price, max_price)?.content
   }
 
 //  @PostMapping("/")

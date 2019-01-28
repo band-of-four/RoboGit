@@ -111,6 +111,19 @@ interface InformationRepository : CrudRepository<Information, Int> {
               @Param("max_price") max_price: Float?) : Page<Information>
 
   /**
+   * Применяет фильтры
+   * @param min_price - минимальная цена
+   * @param max_price - максимальная цена
+   * @return страницу результата
+   */
+  @Query("SELECT i FROM Information i WHERE " +
+          "(:min_price IS NULL OR :min_price < i.price) AND" +
+          "(:max_price IS NULL OR :max_price > i.price)")
+  fun filter( pagable: Pageable,
+              @Param("min_price") min_price: Float?,
+              @Param("max_price") max_price: Float?) : Page<Information>
+
+  /**
    * Возвращает полную информацию о прочем ресурсе
    * @param id - ид ресурса
    * @return результат

@@ -1,5 +1,6 @@
 package org.robogit.repository
 
+import org.robogit.domain.Information
 import org.robogit.domain.Interface
 import org.robogit.domain.Sensor
 import org.robogit.dto.MegaInformationDto
@@ -101,7 +102,7 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
    * @param max_max_voltage - максимальное макс.значение voltage
    * @return страницу результата
    */
-  @Query("SELECT s FROM Sensor s JOIN s.information si WHERE " +
+  @Query("SELECT si FROM Sensor s JOIN s.information si WHERE " +
           "si.type = org.robogit.domain.Type.SENSOR AND" +
           "(:min_price IS NULL OR :min_price < si.price) AND" +
           "(:max_price IS NULL OR :max_price > si.price) AND" +
@@ -115,7 +116,7 @@ interface SensorRepository: CrudRepository<Sensor, Int> {
               @Param("min_min_voltage") min_min_voltage: Float?,
               @Param("max_min_voltage") max_min_voltage: Float?,
               @Param("min_max_voltage") min_max_voltage: Float?,
-              @Param("max_max_voltage") max_max_voltage: Float?) : Page<Sensor>
+              @Param("max_max_voltage") max_max_voltage: Float?) : Page<Information>
 
   /**
    * Возвращает полную информацию о сенсоре

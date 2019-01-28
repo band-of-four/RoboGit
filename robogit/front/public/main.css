@@ -18,6 +18,10 @@
     margin: -32px 0 0 -32px;
 }
 
+.number-filter {
+    border-radius: 5px;
+}
+
 .view-container{
     margin-top:20px;
 }

@@ -1,6 +1,7 @@
 package org.robogit.controllers
 
 import lombok.extern.slf4j.Slf4j
+import org.robogit.domain.Information
 import org.robogit.domain.MechanicDetail
 import org.robogit.dto.MechanicDetailSumDto
 import org.robogit.repository.MechanicDetailRepository
@@ -31,7 +32,7 @@ class MechanicDetailController {
     @GetMapping("/mechanic_detail/filter")
     fun filter(@RequestParam(defaultValue = "0", required = false) pageNum: Int,
                @RequestParam(required = false) min_price: Float?,
-               @RequestParam(required = false) max_price: Float?) : List<MechanicDetail?>?{
+               @RequestParam(required = false) max_price: Float?) : List<Information?>?{
         println("Controller!")
         val page = PageRequest.of(pageNum, 50)
         return mechanicDetailRepository?.filter(page, min_price, max_price)?.content
