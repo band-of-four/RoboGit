@@ -4,9 +4,7 @@ import org.robogit.domain.Role
 import org.robogit.domain.User
 import org.robogit.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.provider.OAuth2Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler
@@ -35,7 +33,7 @@ class OAuth2AuthenticationSuccessHandler : AuthenticationSuccessHandler {
           this.role = Role.ROLE_USER
         }
         userRepository?.save(user)
-      }
+      } // TODO else here should be fetched user's authorities from db and pushed to [authentication]
     }
     SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication)
   }
