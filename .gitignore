@@ -12,4 +12,5 @@ gradle/
 
 robogit/front/node_modules/
 .teletoken
+.facebook.cfg
 
