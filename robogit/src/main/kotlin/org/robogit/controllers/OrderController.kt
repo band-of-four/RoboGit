@@ -55,15 +55,11 @@ open class OrderController {
         ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
     val order = Order()
     order.date = Date.from(Instant.now())
-    val userOpt = userRepository.findById(user.id!!)
-    if (!userOpt.isPresent) {
-      return ResponseEntity(HttpStatus.BAD_REQUEST)
-    }
-    order.user = userOpt.get()
+    order.user = user
 
     val card = productUserRepository?.findAllByUserId(user.id!!)
     card?.forEach {
-      val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userOpt.get().id!!, it.information.id!!)
+      val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(user.id!!, it.information.id!!)
       val information = byUserIdAndId?.information!!
       if (information.amount!! < it.amount) {
         return ResponseEntity(it.information.name!!, HttpStatus.BAD_REQUEST)
@@ -72,7 +68,7 @@ open class OrderController {
 
     val savedOrder = orderRepository?.save(order)
     for (item in card!!) {
-      val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(userOpt.get().id!!, item.information.id!!)
+      val byUserIdAndId = productUserRepository?.findByUserIdAndProductId(user.id!!, item.information.id!!)
       val productOrder = ProductOrder()
       val information = byUserIdAndId?.information!!
       information.amount = information.amount!! - item.amount

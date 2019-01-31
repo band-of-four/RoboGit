@@ -3,7 +3,7 @@ import requests
 import json
 from datetime import datetime
 
-BASE_HOST = "http://robogit.org:8080/api/telebot"
+BASE_HOST = "https://localhost:8443/api/telebot"
 
 f = open(".teletoken", "r")
 token = f.read().rstrip()
@@ -36,14 +36,15 @@ def send_payment(message):
     order_id = str(message.text).split()[1]
     tele_id = str(message.chat.id)
 
-    r = requests.get(BASE_HOST + f"/getOrder/{tele_id}/{order_id}")
+    r = requests.get(BASE_HOST + f"/getOrder/{tele_id}/{order_id}", verify=False)
     response = json.loads(r.content.decode("UTF-8"))
+    print(response)
 
     if str(response["id"]) != order_id or response["paid"]:
         bot.send_message(message.chat.id, "This order has been already paid")
         return
 
-    r = requests.get(BASE_HOST + f"/getFullPrice/{order_id}")
+    r = requests.get(BASE_HOST + f"/getFullPrice/{order_id}", verify=False)
     response = json.loads(r.content.decode("UTF-8"))
     if float(str(response[0]["sum"])) <= 0.0000001:
         bot.send_message(message.chat.id, "This order is free (lol)")
@@ -75,7 +76,7 @@ def set_address(message):
         return
 
     r = requests.post(BASE_HOST + "/setDestination",
-                      json={"orderId": int(order_id), "telegramId": str(tele_id), "address": str(address)})
+                      json={"orderId": int(order_id), "telegramId": str(tele_id), "address": str(address)}, verify=False)
     if r.status_code == 200:
         bot.send_message(message.chat.id, f"Destination address for order {order_id} set")
     else:
@@ -113,7 +114,7 @@ def set_delivery_date(message):
     r = requests.post(BASE_HOST + "/setDeliveryDate",
                       json={"orderId": int(order_id),
                             "telegramId": str(tele_id),
-                            "date": delivery_date.strftime('%Y-%m-%d')})
+                            "date": delivery_date.strftime('%Y-%m-%d')}, verify=False)
     response = r.content.decode("UTF-8")
     bot.send_message(message.chat.id, f"{response}")
 

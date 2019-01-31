@@ -30,6 +30,7 @@ class TelebotController {
                @PathVariable("orderId") orderId: Int): Order? {
     val order = orderRepository?.findById(orderId)?.get() ?: return null
     val teleUser = userRepository?.findByTelegramId(telegramId)?.find { it.telegramId == telegramId }
+    if (order.isPaid == null) order.isPaid = false
     return if (!order.isPaid!! && order.user?.id == teleUser?.id) order else null
   }
 
